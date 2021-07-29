@@ -1,14 +1,11 @@
 import React  from "react";
+import {BrowserRouter} from "react-router-dom";
+import MainRouter from "./MainRouter";
 
-
-function App() {
-  return (
-    <div className="App">
-      <div className="container">
-      <h1>React Hook</h1>
-      </div>
-    </div>
-  );
-}
+const App=()=>(
+  <BrowserRouter>
+    <MainRouter/> 
+  </BrowserRouter>
+)
 
 export default App;
