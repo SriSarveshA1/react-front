@@ -1,11 +1,13 @@
 import React from 'react';
 import {Route,Switch} from 'react-router-dom';
 import Home from './core/Home';
+import Menu from './core/Menu';
 import Signup from './user/Signup';
 import Signin from './user/signin';
 
 const MainRouter=()=>(
     <div>
+        <Menu/>
         <Switch>{/* This componenet will let the React to choose a particular route based on the url its first match */ }
             <Route exact path="/signin" component={Signin}/>
             <Route exact path="/signup" component={Signup}/>
