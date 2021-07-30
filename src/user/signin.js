@@ -1,5 +1,5 @@
 import {React,Component} from 'react';
-
+import {Redirect} from 'react-router-dom';
 class Signin extends Component {
   constructor() {
    super();//we need to call the Parent class(componenet class) constructor
@@ -22,6 +22,7 @@ class Signin extends Component {
    const user={ //user object contains the data that is required in backend to create a account
      email,password
    }
+   console.log(user);
    this.signin(user).then((data)=>{
      if(data.error){
        //if the response we get has error as true then we just set that value in the state and it will get displayed
@@ -29,10 +30,20 @@ class Signin extends Component {
      }
      else{
       //if there is no error we need to authenticate the user and redirect them to the Home page or intended page
+      this.authenticate(data,()=>{
+        this.setState({redirectToReferer:true})
+      })
      }
    });
   }
-  
+
+  authenticate=(jwt,callback)=>{
+    if(typeof window!=="undefined")
+    { 
+      localStorage.setItem("jwt",JSON.stringify(jwt));
+      callback();
+    }
+  }
   signin=(user)=>{//this function will get the response and the response will be returned to the called line of this function so we can print the user about the validation mistakes
     return fetch("http://localhost:8080/signin",{
      //these are the information that we are sending to the backend
@@ -62,12 +73,16 @@ class Signin extends Component {
       </div>
       <button  className="btn btn-raised btn-success" onClick={this.clickSubmit}> Submit</button>       
            
-  </form>//*for each input field we have value=this.state.Inputfieldname  that is because what ever value that you enter in the input field that will be get updated in the state and also here it will .so this is called controlled componnents*/}
+   </form>//*for each input field we have value=this.state.Inputfieldname  that is because what ever value that you enter in the input field that will be get updated in the state and also here it will .so this is called controlled componnents*/}
   );
 
 
   render() {
-    const {email, password,error}=this.state;
+    const {email, password,error,redirectToReferer}=this.state;
+    if(redirectToReferer)
+    {
+      return <Redirect to="/" />
+    }
     return (
         <div className="container">{/* we are using the bootstrap classes as we already kept the cdn link of the bootstrap in our index.html page*/}
           <h2 className="mt-5 mb-5">Signin</h2>{/* this will give a bit of padding in bottom and up*/}
