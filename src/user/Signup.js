@@ -20,8 +20,24 @@ class Signup extends Component {
    const user={ //user object contains the data that is required in backend to create a account
      name,email,password
    }
-   //console.log(user); 
-   fetch("http://localhost:8080/signup",{
+   this.signup(user).then((data)=>{
+     if(data.error){
+       //if the response we get has error as true then we just set that value in the state and it will get displayed
+       return this.setState({error:data.error});
+     }
+     else{
+       //if everything goes fine we make these values empty
+       this.setState({
+         error:"",
+         name:"",
+         email:"",
+         password:""
+       });
+     }
+   });
+  }
+  signup=(user)=>{//this function will get the response and the response will be returned to the called line of this function so we can print the user about the validation mistakes
+    return fetch("http://localhost:8080/signup",{
      //these are the information that we are sending to the backend
      method:"POST",
      headers:{
@@ -35,6 +51,7 @@ class Signup extends Component {
    })
    .catch(error =>console.log(error));//if the request was not successful 
   }
+
   render() {
     const {name, email, password}=this.state;
     return (
