@@ -11,13 +11,18 @@ class Signin extends Component {
     
    };
   }
+
+
   handleChange=(name)=>(event)=>{
     this.setState({error:""});//so when ever there is a change is happening on input field we will remove the error message
     this.setState({[name]:event.target.value});
   }
+
+
   clickSubmit=(event)=>{//when ever the button is submitted we take the values in state to backend
    //first we prevent the default behaviour of the user (default when the button is clicked the page reloads)
    event.preventDefault();
+   this.setState({loading:true});
    const {email,password}=this.state;
    const user={ //user object contains the data that is required in backend to create a account
      email,password
@@ -26,12 +31,12 @@ class Signin extends Component {
    this.signin(user).then((data)=>{
      if(data.error){
        //if the response we get has error as true then we just set that value in the state and it will get displayed
-       return this.setState({error:data.error});
+       return this.setState({error:data.error,loading:false});
      }
      else{
       //if there is no error we need to authenticate the user and redirect them to the Home page or intended page
       this.authenticate(data,()=>{
-        this.setState({redirectToReferer:true})
+        this.setState({redirectToReferer:true,loading:false})
       })
      }
    });
@@ -44,6 +49,8 @@ class Signin extends Component {
       callback();
     }
   }
+
+
   signin=(user)=>{//this function will get the response and the response will be returned to the called line of this function so we can print the user about the validation mistakes
     return fetch("http://localhost:8080/signin",{
      //these are the information that we are sending to the backend
@@ -78,7 +85,7 @@ class Signin extends Component {
 
 
   render() {
-    const {email, password,error,redirectToReferer}=this.state;
+    const {email, password,error,redirectToReferer,loading}=this.state;
     if(redirectToReferer)
     {
       return <Redirect to="/" />
@@ -90,7 +97,11 @@ class Signin extends Component {
           <div className="alert alert-danger" style={{display:error?"":"none"}}>
             { error}
           </div>
-          
+          {loading?<div className="jumbotron text-center">
+                    <h2>Loading...</h2>
+                    </div>
+                    :""
+          }
           {this.signinForm(email,password)}
         </div>
     );
