@@ -7,10 +7,12 @@ class Signup extends Component {
     name:"",
     email:"",
     password:"",
-    error:""
+    error:"",
+    open:false//we have this value initially set as false because that shows we dont have created account successfully yetttt....
    };
   }
   handleChange=(name)=>(event)=>{
+    this.setState({error:""});//so when ever there is a change is happening on input field we will remove the error message
     this.setState({[name]:event.target.value});
   }
   clickSubmit=(event)=>{//when ever the button is submitted we take the values in state to backend
@@ -31,7 +33,8 @@ class Signup extends Component {
          error:"",
          name:"",
          email:"",
-         password:""
+         password:"",
+         open:true//when the input fields data that we entered successfully passed the validation then we need to set this as true so that the div block we created will be visible to disply the successfly created message
        });
      }
    });
@@ -53,10 +56,17 @@ class Signup extends Component {
   }
 
   render() {
-    const {name, email, password}=this.state;
+    const {name, email, password,error,open}=this.state;
     return (
         <div className="container">{/* we are using the bootstrap classes as we already kept the cdn link of the bootstrap in our index.html page*/}
           <h2 className="mt-5 mb-5">Signup</h2>{/* this will give a bit of padding in bottom and up*/}
+
+          <div className="alert alert-primary" style={{display:error?"":"none"}}>
+            { error}
+          </div>
+          <div className="alert alert-primary" style={{display:open?"":"none"}}>
+             New Account created successfully please signin.
+          </div>
           <form>
             <div className="form-group">
               <lable className="text-muted"> Name</lable>
