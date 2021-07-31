@@ -13,7 +13,7 @@ const MainRouter=()=>(
             <Route exact path="/signin" component={Signin}/>
             <Route exact path="/signup" component={Signup}/>
             <Route exact path="/" component={Home}/>{/* This initial route / should always be bottom and then only the specific routes gets matched and executed or we can use exact keyword to make the route to get selected only if there is exact match */}
-            <Route exact path="/user/:userId" component={Profile}/>
+            <Route exact path="/user/:userId" component={Profile}/> 
         </Switch>
     </div>
 )

@@ -1,12 +1,12 @@
+import React  from 'react'; 
 
-
-
+      
 export const signup=(user)=>{//this function will get the response and the response will be returned to the called line of this function so we can print the user about the validation mistakes
     return fetch(`${process.env.REACT_APP_API_URL}/signup`,{
      //these are the information that we are sending to the backend
      method:"POST",
      headers:{
-        Accept: "application/json",
+        Accept: "application/json", 
         "Content-Type": "application/json" //the conent type that we are passing should be json type
      },
      body:JSON.stringify(user)//we need to convert from the normal object to the JSON object
@@ -18,7 +18,8 @@ export const signup=(user)=>{//this function will get the response and the respo
   }
 
   export const signin=(user)=>{//this function will get the response and the response will be returned to the called line of this function so we can print the user about the validation mistakes
-    return fetch(`${process.env.REACT_APP_API_URL}/signin`,{
+    //console.log("sdsdsdsd=",process.env.REACT_APP_API_URL);
+    return  fetch(`${process.env.REACT_APP_API_URL}/signin`,{
      //these are the information that we are sending to the backend
      method:"POST",
      headers:{
@@ -50,6 +51,7 @@ export const signup=(user)=>{//this function will get the response and the respo
         window.localStorage.removeItem("jwt");//we remove the jwt key value pair
         callback();//as soon as we remove the jwt from the local storage we want the redirection page to be happen to home page /login page
         //after this we send response to the backend
+  
         return fetch(`${process.env.REACT_APP_API_URL}/signout`,{
             method:"GET"
         })

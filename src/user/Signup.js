@@ -1,5 +1,5 @@
 import {React,Component} from 'react';
-import {signup} from "../auth/index.js";
+import {signup} from "../auth";
 class Signup extends Component {
   constructor() {
    super();//we need to call the Parent class(componenet class) constructor

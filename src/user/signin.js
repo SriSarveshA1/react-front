@@ -1,6 +1,6 @@
 import {React,Component} from 'react';
 import {Redirect} from 'react-router-dom';
-import {signin,authenticate} from '../auth/index'
+import {signin,authenticate} from '../auth'
 
 class Signin extends Component {
   constructor() {
@@ -29,7 +29,7 @@ class Signin extends Component {
    const user={ //user object contains the data that is required in backend to create a account
      email,password
    }
-   console.log(user);
+  // console.log(user);
    signin(user).then((data)=>{
      if(data.error){
        //if the response we get has error as true then we just set that value in the state and it will get displayed
