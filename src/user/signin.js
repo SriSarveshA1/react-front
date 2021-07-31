@@ -1,5 +1,7 @@
 import {React,Component} from 'react';
 import {Redirect} from 'react-router-dom';
+import {signin,authenticate} from '../auth/index'
+
 class Signin extends Component {
   constructor() {
    super();//we need to call the Parent class(componenet class) constructor
@@ -28,44 +30,20 @@ class Signin extends Component {
      email,password
    }
    console.log(user);
-   this.signin(user).then((data)=>{
+   signin(user).then((data)=>{
      if(data.error){
        //if the response we get has error as true then we just set that value in the state and it will get displayed
        return this.setState({error:data.error,loading:false});
      }
      else{
       //if there is no error we need to authenticate the user and redirect them to the Home page or intended page
-      this.authenticate(data,()=>{
+      authenticate(data,()=>{
         this.setState({redirectToReferer:true,loading:false})
       })
      }
    });
   }
 
-  authenticate=(jwt,callback)=>{
-    if(typeof window!=="undefined")
-    { 
-      localStorage.setItem("jwt",JSON.stringify(jwt));
-      callback();
-    }
-  }
-
-
-  signin=(user)=>{//this function will get the response and the response will be returned to the called line of this function so we can print the user about the validation mistakes
-    return fetch("http://localhost:8080/signin",{
-     //these are the information that we are sending to the backend
-     method:"POST",
-     headers:{
-        Accept: "application/json",
-        "Content-Type": "application/json" //the conent type that we are passing should be json type
-     },
-     body:JSON.stringify(user)//we need to convert from the normal object to the JSON object
-   })
-   .then(response => {//so when the request made successfully
-     return response.json();//we just return the response object
-   })
-   .catch(error =>console.log(error));//if the request was not successful 
-  }
 
 
   signinForm=(email,password)=>(
