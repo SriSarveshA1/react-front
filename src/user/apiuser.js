@@ -19,3 +19,15 @@ export const read=(userId,token)=>{//we created this fetch method to handle to s
      })
      .catch(error =>console.log(error))
 }
+
+export const list=()=>{
+    return fetch(`${process.env.REACT_APP_API_URL}/users`,{ //here we are making request to the GET request to the /users 
+      method: "GET",
+     
+      })
+    .then(response =>{
+        return response.json();//we send the response
+     })
+     .catch(error =>console.log(error))
+
+}

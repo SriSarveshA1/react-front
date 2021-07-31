@@ -23,6 +23,11 @@ const Menu=({history})=>( //here from the props that we got from the withRouter(
           <li className="nav-item">
               <Link className="nav-link" style={isActive(history,"/")} to="/">Home</Link>
           </li>
+
+          <li className="nav-item">
+              <Link className="nav-link" style={isActive(history,"/users")} to="/users">Users</Link>
+          </li>
+           
           {!isAuthenticated()&&(
               <React.Fragment>
                    <li class="nav-item">
@@ -48,7 +53,8 @@ const Menu=({history})=>( //here from the props that we got from the withRouter(
              </React.Fragment>
 
            )}
-           
+
+          
          </ul>      
     </div>  
 )
