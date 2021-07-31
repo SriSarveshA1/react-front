@@ -11,7 +11,6 @@ const isActive =(history,path) => {
   else{
       return {color:"#ffffff"}
   }
-
   }
 
 
@@ -44,7 +43,7 @@ const Menu=({history})=>( //here from the props that we got from the withRouter(
              </li>
 
               <li class="nav-item">
-                <a className="nav-link" >{isAuthenticated().user.name}</a>{/*The isauthenticated function if the user is authenticated the we will return the jwt(parsed object) as a response */}
+               <Link className="nav-link" style={{color:"#fff"}}  to={`/user/${isAuthenticated().user._id}`} >{`${isAuthenticated().user.name}'s profile`}</Link>{/*The isauthenticated function if the user is authenticated the we will return the jwt(parsed object) as a response */}
               </li> 
              </React.Fragment>
 
