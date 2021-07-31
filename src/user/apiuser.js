@@ -1,4 +1,6 @@
 //in this method we have helper methods that deals with the calls that we make with api 
+import {isAuthenticated} from "../auth/index"
+
 
 
 export const read=(userId,token)=>{//we created this fetch method to handle to sending post request to the backend to retrive the user data after authentication

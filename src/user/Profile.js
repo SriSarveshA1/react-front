@@ -1,6 +1,6 @@
 import React,{Component} from "react";
 import {isAuthenticated} from "../auth";
-import { Redirect } from "react-router";
+import { Redirect,Link} from "react-router-dom";
 import {read} from './apiUser'
 class Profile extends Component{
     constructor()
@@ -35,7 +35,7 @@ class Profile extends Component{
     }
 
     render() {
-        const redirectToSignin=this.state.redirectToSignin;
+        const {redirectToSignin,user} = this.state;
         if(redirectToSignin)
         {
             //if this is true then the user is not authenticated
@@ -43,10 +43,29 @@ class Profile extends Component{
         }
         return (
            <div className="container">
+            <div className="row">
+              <div className="col-md-6">
                <h2 className="mt-5 mb-5">Profile</h2>
                <p>Hello {isAuthenticated().user.name}</p>
                <p>Email {isAuthenticated().user.email}</p>
-               <p>{`Joined ${new Date(this.state.user.created).toDateString()}`}</p>{/*we are printing the date when the user joined*/}
+               <p>{`Joined ${new Date(user.created).toDateString()}`}</p>{/*we are printing the date when the user joined*/}
+              </div>
+              <div className="col-md-6">
+                  {/* If the Authenticated user is not undefined and the person who is authenticated and who visits that particular url with id should be the same one*/}
+                 {isAuthenticated().user   //and isAuthenticated().user._id is the same as the user id that we stored in the state which (we got from that props.match.param)
+                 &&isAuthenticated().user._id==user._id &&(
+                 <div className="d-inline-block mt-5">
+                     {/* so when the user_id in the url and the authenticated user_id are same we just give this edit and delete options to the user and when the user click the edit or delete we take them to the particular component*/}
+                    <Link className="btn btn-raised btn-success mr-5" to={`/user/edit/${user._id}`}> {/* so when the user is click this Edit Profile the `/user/edit/${this.state.user._id}` with the userid will be in the url and the edit profile route will be rendered*/}
+                       Edit Profile
+                    </Link>
+                    <button className="btn btn-raised btn-danger">{/*when this is clicked the user is delete*/}
+                        Delete Profile
+                    </button>
+                 </div>
+                 )}
+              </div>
+            </div>
            </div>
         );
     }
