@@ -1,4 +1,5 @@
 import react from 'react';
+import React from 'react';
 import {Link,withRouter} from 'react-router-dom';
 
 
@@ -34,6 +35,25 @@ export const signout =(callback) => {
 
 }
 
+export const isAuthenticated=()=>{
+    if(typeof window=="undefined")
+    {
+        //if there is not even window object generated we just return false and say not authenticated
+        return false;
+    }
+    if(localStorage.getItem("jwt"))
+    {
+        //if the jwt is present in the local storage then the user is authenticated
+        return JSON.parse(localStorage.getItem("jwt"));
+    }
+    else{
+        //not authenticated
+        return false;
+    }
+
+}
+
+
 
 
 const Menu=({history})=>( //here from the props that we got from the withRouter(Menu) we just destruct the history object  and using withRouter(Menu) component we get the current location also
@@ -42,15 +62,24 @@ const Menu=({history})=>( //here from the props that we got from the withRouter(
           <li className="nav-item">
               <Link className="nav-link" style={isActive(history,"/")} to="/">Home</Link>
           </li>
-          <li class="nav-item">
-              <Link className="nav-link" style={isActive(history,"/signin")}  to="/signin">Signin</Link>
-          </li>
-          <li class="nav-item">
-              <Link className="nav-link" style={isActive(history,"/signup")}  to="/signup">Signup</Link>
-          </li>
-          <li class="nav-item">
-              <a className="nav-link" style={(isActive(history,"/signout"),{cursor:"pointer",color:"#fff"})} onClick={() =>signout(()=>history.push("/"))} >Signout</a>
-          </li>
+          {!isAuthenticated()&&(
+              <React.Fragment>
+                   <li class="nav-item">
+                      <Link className="nav-link" style={isActive(history,"/signin")}  to="/signin">Signin</Link>
+                   </li>
+                   <li class="nav-item">
+                      <Link className="nav-link" style={isActive(history,"/signup")}  to="/signup">Signup</Link>
+                   </li>
+
+              </React.Fragment>    
+          )}
+         
+         
+          {isAuthenticated()&&(//if and only if the user is authenticated we display and give an option for the user to signOut
+              <li class="nav-item">
+                <a className="nav-link" style={(isActive(history,"/signout"),{cursor:"pointer",color:"#fff"})} onClick={() =>signout(()=>history.push("/"))} >Signout</a>
+             </li>
+           )}
            
          </ul>      
     </div>  
