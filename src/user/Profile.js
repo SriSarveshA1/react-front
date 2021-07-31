@@ -1,6 +1,7 @@
 import React,{Component} from "react";
 import {isAuthenticated} from "../auth";
 import { Redirect } from "react-router";
+import {read} from './apiUser'
 class Profile extends Component{
     constructor()
     {
@@ -10,29 +11,29 @@ class Profile extends Component{
             redirectToSignin:false//we have this bec
         }
     }
+     
+    
+    init=(userId) =>{
+        //here in this method we call the read() method that will that calls the fetch() method that returns the response after requesting backend and here in this method we work with the data
+        const token=isAuthenticated().token;
+        read(userId,token)
+         .then(data => {//if the above part went to error we just console it or if it goes fine we just print the data
+         if(data.error){
+          this.setState({redirectToSignin:true});//so if the user is not authticated we ask the user to signin and make them redirect to signin
+          }
+         else{
+           this.setState({user:data});//so we are setting the state user value with data we got after we successfully made a /post request to the signin route as we get extra information about the user in the data object
+          }
+          })
+    };
+
+
     componentDidMount(){
         const userId=this.props.match.params.userId;//so using this way we can get the userid part of the parameter in the url
-        fetch(`${process.env.REACT_APP_API_URL}/user/${userId}`,{ //After retriving the userid from the url parameter and we need to make a get request along with the url to get the user information
-                                                                  //And also we need to send the token in the header to show that we are authenticated
-            method: "GET",
-            headers:{
-                Accept: "application/json",
-                "Content-Type": "application/json",
-                Authorization:`Bearer ${isAuthenticated().token}`//the isAuthenticated() method returns the jwt as the response in json object and we just send the token property of the object in the Authorization 
-            }
-        })
-        .then(response =>{
-            return response.json();
-        })
-        .then(data => {//if the above part went to error we just console it or if it goes fine we just print the data
-            if(data.error){
-                this.setState({redirectToSignin:true});//so if the user is not authticated we ask the user to signin and make them redirect to signin
-            }
-            else{
-               this.setState({user:data});//so we are setting the state user value with data we got after we successfully made a /post request to the signin route as we get extra information about the user in the data object
-            }
-        })
+        //when the component mounts we grab the userId from the the parameter in the url and pass it to the init method
+        this.init(userId);
     }
+
     render() {
         const redirectToSignin=this.state.redirectToSignin;
         if(redirectToSignin)
