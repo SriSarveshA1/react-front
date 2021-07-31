@@ -1,7 +1,8 @@
 
 
+
 export const signup=(user)=>{//this function will get the response and the response will be returned to the called line of this function so we can print the user about the validation mistakes
-    return fetch("http://localhost:8080/signup",{
+    return fetch(`${process.env.REACT_APP_API_URL}/signup`,{
      //these are the information that we are sending to the backend
      method:"POST",
      headers:{
@@ -17,7 +18,7 @@ export const signup=(user)=>{//this function will get the response and the respo
   }
 
   export const signin=(user)=>{//this function will get the response and the response will be returned to the called line of this function so we can print the user about the validation mistakes
-    return fetch("http://localhost:8080/signin",{
+    return fetch(`${process.env.REACT_APP_API_URL}/signin`,{
      //these are the information that we are sending to the backend
      method:"POST",
      headers:{
@@ -49,7 +50,7 @@ export const signup=(user)=>{//this function will get the response and the respo
         window.localStorage.removeItem("jwt");//we remove the jwt key value pair
         callback();//as soon as we remove the jwt from the local storage we want the redirection page to be happen to home page /login page
         //after this we send response to the backend
-        return fetch("http://localhost:8080/signout",{
+        return fetch(`${process.env.REACT_APP_API_URL}/signout`,{
             method:"GET"
         })
         //so if the sending get request to the backend went fine then we call the then method
