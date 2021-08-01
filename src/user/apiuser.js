@@ -20,6 +20,25 @@ export const read=(userId,token)=>{//we created this fetch method to handle to s
      .catch(error =>console.log(error))
 }
 
+export const update = (userId, token, user) => {
+  return fetch(`${process.env.REACT_APP_API_URL}/user/${userId}`, {
+      method: "PUT",
+      headers: {
+          Accept: "application/json",
+          //"Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+      },
+      body:{user}
+  })
+      .then(response => {
+          return response.json();
+      })
+      .catch(err => console.log(err));
+};
+
+
+
+
 export const remove=(userId,token)=>{
   //so here we are going to give backend request DELETE 
   return fetch(`${process.env.REACT_APP_API_URL}/user/${userId}`,{
@@ -47,3 +66,4 @@ export const list=()=>{
      .catch(error =>console.log(error))
 
 }
+

@@ -79,7 +79,7 @@ class Profile extends Component{
                      {/* so when the user_id in the url and the authenticated user_id are same we just give this edit and delete options to the user and when the user click the edit or delete we take them to the particular component*/}
                     <Link className="btn btn-raised btn-success mr-5" to={`/user/edit/${user._id}`}> {/* so when the user is click this Edit Profile the `/user/edit/${this.state.user._id}` with the userid will be in the url and the edit profile route will be rendered*/}
                        Edit Profile
-                    </Link>
+                    </Link> 
                     <DeleteUser userId={user._id} />
                  </div>
                  )}

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import {isAuthenticated} from "../auth";
-import {read} from "./apiUser";
+import {read,update} from "./apiUser";
 import {signup} from '../auth/index';
+import {Redirect} from 'react-router-dom';
 
 class EditProfile extends Component {
 
@@ -11,7 +12,9 @@ class EditProfile extends Component {
            id:"",
            name:"",
            email:"",
-           password:""
+           password:"",
+           error: "",//same as signup even after updation we check for the validation errors and display here
+           redirectToProfile:false
        }
      }
 
@@ -21,10 +24,11 @@ class EditProfile extends Component {
         read(userId,token)
          .then(data => {//if the above part went to error we just console it or if it goes fine we just print the data
          if(data.error){
-            this.setState({redirectToSignin:true});//so if the user is not authticated we ask the user to signin and make them redirect to signin
+            this.setState({redirectToProfile:true});//so if the user is not authticated we ask the user to signin and make them redirect to signin
           }
          else{
-            this.setState({id:data._id,name:data.name,email:data.email});//so we are setting the state user value with data we got after we successfully made a /post request to the signin route as we get extra information about the user in the data object
+           console.log("sderr");
+            this.setState({id:data._id,name:data.name,email:data.email,error:""});//so we are setting the state user value with data we got after we successfully made a /post request to the signin route as we get extra information about the user in the data object
           }
           })
     };
@@ -33,7 +37,7 @@ class EditProfile extends Component {
     componentDidMount(){
         const userId=this.props.match.params.userId;//so using this way we can get the userid part of the parameter in the url
         //when the component mounts we grab the userId from the the parameter in the url and pass it to the init method
-        
+        console.log("sderr");
         this.init(userId);
     }
 
@@ -42,7 +46,8 @@ class EditProfile extends Component {
         this.setState({[name]:event.target.value});//so even on the edit form we get when ever a value entered into the name field of the form will be grabbed here and setState will happen
       }
       
-      clickSubmit=(event)=>{//when ever the button is submitted we take the values in state to backend
+      clickSubmit=(event)=>
+      {//when ever the button is submitted we take the values in state to backend
        //first we prevent the default behaviour of the user (default when the button is clicked the page reloads)
        event.preventDefault();
        const {name,email,password}=this.state;
@@ -50,25 +55,18 @@ class EditProfile extends Component {
          name,email,password
        }
 
-       console.log(user);
-      /* signup(user).then((data)=>{
-         if(data.error){
-           //if the response we get has error as true then we just set that value in the state and it will get displayed
-           return this.setState({error:data.error});
-         }
-         else{
-           //if everything goes fine we make these values empty
-           this.setState({
-             error:"",
-             name:"",
-             email:"",
-             password:"",
-             open:true//when the input fields data that we entered successfully passed the validation then we need to set this as true so that the div block we created will be visible to disply the successfly created message
-           });
-         }
-         
+       console.log("Click submit user:",user);
+       const userId=this.props.match.params.userId;//so using this way we can get the userid part of the parameter in the url
+       const token=isAuthenticated().token;
+
+       update(userId, token, user).then(data => {
+        if (data.error) this.setState({ error: data.error });
+        else
+            this.setState({
+                redirectToProfile: true
+            });
        });
-       */
+       
       }
       
     
@@ -93,7 +91,13 @@ class EditProfile extends Component {
 
 
     render() {
-        const{name, email,password}=this.state;
+        const{id,name, email,password,redirectToProfile} = this.state;
+        
+        if (redirectToProfile) {
+            //So once the user updated his profile this redirectToProfile will become true and Redirect will happen
+            console.log("sdsdsd11122")
+            return <Redirect to={`/user/${id}`} />;
+          }
         return (
             <div className="container">
                 <h2 className="mt-5 mb-5">Edit Profile</h2>
