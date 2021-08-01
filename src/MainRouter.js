@@ -6,6 +6,7 @@ import Profile from './user/Profile';
 import Signup from './user/Signup';
 import Signin from './user/signin';
 import Users from './user/Users';
+import EditProfile from './user/EditProfile';
 
 const MainRouter=()=>(
     <div>
@@ -16,6 +17,7 @@ const MainRouter=()=>(
             <Route exact path="/" component={Home}/>{/* This initial route / should always be bottom and then only the specific routes gets matched and executed or we can use exact keyword to make the route to get selected only if there is exact match */}
             <Route exact path="/user/:userId" component={Profile}/> 
             <Route exact path="/users" component={Users}/>
+            <Route exact path="/user/edit/:userId" component={EditProfile}/>
         </Switch>
     </div>
 )

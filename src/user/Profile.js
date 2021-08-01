@@ -15,14 +15,7 @@ class Profile extends Component{
             redirectToSignin:false//we have this bec
         }
     }
-     
-    func1=(data)=>{
-        this.setState({redirectToSignin:true})
-    }
-
-    func2=(data)=>{
-        this.setState({user:data});
-    }
+  
     
     init=(userId) =>{
         //here in this method we call the read() method that will that calls the fetch() method that returns the response after requesting backend and here in this method we work with the data
@@ -30,10 +23,10 @@ class Profile extends Component{
         read(userId,token)
          .then(data => {//if the above part went to error we just console it or if it goes fine we just print the data
          if(data.error){
-          this.func1();//so if the user is not authticated we ask the user to signin and make them redirect to signin
+            this.setState({redirectToSignin:true});//so if the user is not authticated we ask the user to signin and make them redirect to signin
           }
          else{
-           this.func2(data);//so we are setting the state user value with data we got after we successfully made a /post request to the signin route as we get extra information about the user in the data object
+            this.setState({user:data});//so we are setting the state user value with data we got after we successfully made a /post request to the signin route as we get extra information about the user in the data object
           }
           })
     };
