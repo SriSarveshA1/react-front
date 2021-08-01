@@ -2,7 +2,10 @@ import React,{Component} from "react";
 import {isAuthenticated} from "../auth";
 import { Redirect,Link} from "react-router-dom";
 import {read} from './apiUser';
-import DefaultProfile from '../images/avatar.jpg'
+import DefaultProfile from '../images/avatar.jpg';
+import DeleteUser from './DeleteUser';  
+
+
 class Profile extends Component{
     constructor()
     {
@@ -43,6 +46,11 @@ class Profile extends Component{
         this.init(userId);
     }
 
+    componentWillReceiveProps(nextProps){//so when ever this component receives new props that is new userid as a parameter this method will be called
+        const userId=nextProps.match.params.userId;
+        this.init(userId);//we again initiate another fetch to backend and get the required user details we want to display in the browser
+    }
+
     render() {
         const {redirectToSignin,user} = this.state;
         if(redirectToSignin)
@@ -79,9 +87,7 @@ class Profile extends Component{
                     <Link className="btn btn-raised btn-success mr-5" to={`/user/edit/${user._id}`}> {/* so when the user is click this Edit Profile the `/user/edit/${this.state.user._id}` with the userid will be in the url and the edit profile route will be rendered*/}
                        Edit Profile
                     </Link>
-                    <button className="btn btn-raised btn-danger">{/*when this is clicked the user is delete*/}
-                        Delete Profile
-                    </button>
+                    <DeleteUser/>
                  </div>
                  )}
               </div>
