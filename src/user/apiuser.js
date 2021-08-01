@@ -20,6 +20,23 @@ export const read=(userId,token)=>{//we created this fetch method to handle to s
      .catch(error =>console.log(error))
 }
 
+export const remove=(userId,token)=>{
+  //so here we are going to give backend request DELETE 
+  return fetch(`${process.env.REACT_APP_API_URL}/user/${userId}`,{
+    method: "DELETE",
+    headers:{
+      Accept: "application/json",
+      "Content-Type": "application/json",
+        Authorization:`Bearer ${token}`//the isAuthenticated() method returns the jwt as the response in json object and we just send the token property of the object in the Authorization 
+       }
+  
+  })
+  .then(response=>{
+    return response.json();
+  })
+  .catch(error =>console.log(error));
+}
+
 export const list=()=>{
     return fetch(`${process.env.REACT_APP_API_URL}/users`,{ //here we are making request to the GET request to the /users 
       method: "GET"

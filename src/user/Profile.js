@@ -87,7 +87,7 @@ class Profile extends Component{
                     <Link className="btn btn-raised btn-success mr-5" to={`/user/edit/${user._id}`}> {/* so when the user is click this Edit Profile the `/user/edit/${this.state.user._id}` with the userid will be in the url and the edit profile route will be rendered*/}
                        Edit Profile
                     </Link>
-                    <DeleteUser/>
+                    <DeleteUser userId={user._id} />
                  </div>
                  )}
               </div>
