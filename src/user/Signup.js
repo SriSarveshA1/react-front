@@ -12,10 +12,13 @@ class Signup extends Component {
     open:false//we have this value initially set as false because that shows we dont have created account successfully yetttt....
    };
   }
+
+
   handleChange=(name)=>(event)=>{
     this.setState({error:""});//so when ever there is a change is happening on input field we will remove the error message
     this.setState({[name]:event.target.value});
   }
+  
   clickSubmit=(event)=>{//when ever the button is submitted we take the values in state to backend
    //first we prevent the default behaviour of the user (default when the button is clicked the page reloads)
    event.preventDefault();
