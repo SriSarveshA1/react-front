@@ -1,7 +1,7 @@
 import React,{Component} from "react";
 import {list} from "./apiUser";
 import {Link} from 'react-router-dom';
-
+import DefaultProfile from '../images/avatar.jpg'
 
 class Users extends Component {
     constructor() {
@@ -35,14 +35,14 @@ class Users extends Component {
             <div className="card col-md-4" key={i}>
                     <img //here we are going to display the image of the user profile
                         className="img-thumbnail"
-                        src=""
-                        
-                        alt={user.name}
+                        src={DefaultProfile}//we give the default profile of every user from the avatar
+                        alt={user.name}//if the image is not visible we just print the user name
+                        style={{width:'100%',height:'15vw',objectFit:'cover'}}
                     />
                     <div className="card-body">
                         <h5 className="card-title">{user.name}</h5>  
                         <p className="card-text">{user.email}</p>
-                        <a to="#" className="btn btn-raised btn-primary btn-sm">{/*so when someone click this we will take them to that users profile*/}    
+                        <a to="#" className="btn btn-raised btn-success btn-sm">{/*so when someone click this we will take them to that users profile*/}    
                             View Profile
                         </a>
                     </div>
