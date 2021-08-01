@@ -44,7 +44,7 @@ const Menu=({history})=>( //here from the props that we got from the withRouter(
           {isAuthenticated()&&(//if and only if the user is authenticated we display and give an option for the user to signOut
              <React.Fragment>
               <li class="nav-item">
-                <a className="nav-link" style={(isActive(history,"/signout"),{cursor:"pointer",color:"#fff"})} onClick={() =>signout(()=>history.push("/"))} >Signout</a>
+                <span className="nav-link" style={(isActive(history,"/signout"),{cursor:"pointer",color:"#fff"})} onClick={() =>signout(()=>history.push("/"))} >Signout</span>
              </li>
 
               <li class="nav-item">

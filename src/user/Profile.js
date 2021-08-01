@@ -81,7 +81,7 @@ class Profile extends Component{
 
                   {/* If the Authenticated user is not undefined and the person who is authenticated and who visits that particular url with id should be the same one*/}
                  {isAuthenticated().user   //and isAuthenticated().user._id is the same as the user id that we stored in the state which (we got from that props.match.param)
-                 &&isAuthenticated().user._id==user._id &&(
+                 &&isAuthenticated().user._id===user._id &&(
                  <div className="d-inline-block ">
                      {/* so when the user_id in the url and the authenticated user_id are same we just give this edit and delete options to the user and when the user click the edit or delete we take them to the particular component*/}
                     <Link className="btn btn-raised btn-success mr-5" to={`/user/edit/${user._id}`}> {/* so when the user is click this Edit Profile the `/user/edit/${this.state.user._id}` with the userid will be in the url and the edit profile route will be rendered*/}
