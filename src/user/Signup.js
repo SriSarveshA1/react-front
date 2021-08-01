@@ -1,5 +1,6 @@
 import {React,Component} from 'react';
 import {signup} from "../auth";
+import {Link} from "react-router-dom";
 class Signup extends Component {
   constructor() {
    super();//we need to call the Parent class(componenet class) constructor
@@ -67,7 +68,7 @@ class Signup extends Component {
             { error}
           </div>
           <div className="alert alert-primary" style={{display:open?"":"none"}}>
-             New Account created successfully please signin.
+             New Account created successfully please <Link to="/signin">Signin</Link>
           </div>
           {this.sighupForm(name,email,password)}
         </div>

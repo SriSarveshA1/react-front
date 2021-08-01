@@ -64,7 +64,7 @@ export const signup=(user)=>{//this function will get the response and the respo
         
     }
 
-}
+  }
 
 export const isAuthenticated=()=>{
     if(typeof window=="undefined")

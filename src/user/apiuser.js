@@ -11,7 +11,7 @@ export const read=(userId,token)=>{//we created this fetch method to handle to s
       headers:{
       Accept: "application/json",
       "Content-Type": "application/json",
-        Authorization:`Bearer ${isAuthenticated().token}`//the isAuthenticated() method returns the jwt as the response in json object and we just send the token property of the object in the Authorization 
+        Authorization:`Bearer ${token}`//the isAuthenticated() method returns the jwt as the response in json object and we just send the token property of the object in the Authorization 
        }
       })
     .then(response =>{
