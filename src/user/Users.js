@@ -1,5 +1,6 @@
 import React,{Component} from "react";
-import {list} from "./apiUser"
+import {list} from "./apiUser";
+import {Link} from 'react-router-dom';
 
 
 class Users extends Component {
@@ -27,23 +28,37 @@ class Users extends Component {
             } 
         });
     }
-
+    renderUsers=(users)=>{
+      return  <div className="row">
+        {
+        users.map((user,i) => (
+            <div className="card col-md-4" key={i}>
+                    <img //here we are going to display the image of the user profile
+                        className="img-thumbnail"
+                        src=""
+                        
+                        alt={user.name}
+                    />
+                    <div className="card-body">
+                        <h5 className="card-title">{user.name}</h5>  
+                        <p className="card-text">{user.email}</p>
+                        <a to="#" className="btn btn-raised btn-primary btn-sm">{/*so when someone click this we will take them to that users profile*/}    
+                            View Profile
+                        </a>
+                    </div>
+            </div>
+        ))
+        }
+   
+       </div>
+    }
     render() { 
         const {users}=this.state;//the list of users we have in the object we put it into the users object
         //console.log("ccxcxc",users);
         return ( 
             <div className="container">
                 <h2 className="mt-5 mb-5">Users </h2>
-                <div className="card">
-                       {
-                       users.map((user,i) => {
-                          return <div key={i}>
-                             <p>{user.name}</p>
-                           </div>
-                       })
-                    }
-                  
-                </div>
+                 {this.renderUsers(users)}; 
             </div>
          );
     }
