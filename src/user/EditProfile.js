@@ -15,7 +15,7 @@ class EditProfile extends Component {
             error: "",
             fileSize: 0,
             loading: false//to make the div block that displays loading or not
-            
+
         };
     }
 
@@ -43,7 +43,7 @@ class EditProfile extends Component {
 
     isValid = () => {
         const { name, email, password, fileSize } = this.state;
-        if (fileSize > 100000) {
+        if (fileSize > 100000) { //here we are validating the file size and if it is greater than 1mb then we need to raise the error
             this.setState({ error: "File size should be less than 100kb" });
             return false;
         }
@@ -66,13 +66,13 @@ class EditProfile extends Component {
     };
 
     handleChange = name => event => {
-        this.setState({ error: "" });
+        this.setState({ error: "" });//so same as signin form we clear the error message displayed when there is a change in the input field
         const value =
             name === "photo" ? event.target.files[0] : event.target.value;
 
-        const fileSize = name === "photo" ? event.target.files[0].size : 0;
+        const fileSize = name === "photo" ? event.target.files[0].size : 0;//here we are using event.target.files[0].size to retrive the size of the photo that is been uploaded
         this.userData.set(name, value);
-        this.setState({ [name]: value, fileSize });
+        this.setState({ [name]: value, fileSize });//even while updating the state we need to change this
     };
 
     clickSubmit = event => { 
