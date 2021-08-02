@@ -4,33 +4,31 @@ import { Link } from "react-router-dom";
 
 class Signup extends Component {
     constructor() {
-        super();//we need to call the Parent class(componenet class) constructor
+        super();
         this.state = {
             name: "",
             email: "",
             password: "",
             error: "",
-            open: false//we have this value initially set as false because that shows we dont have created account successfully yetttt....
+            open: false
         };
     }
 
     handleChange = name => event => {
-        this.setState({ error: "" });//so when ever there is a change is happening on input field we will remove the error message
+        this.setState({ error: "" });
         this.setState({ [name]: event.target.value });
     };
 
-    clickSubmit = event => {//when ever the button is submitted we take the values in state to backend
-        //first we prevent the default behaviour of the user (default when the button is clicked the page reloads)
+    clickSubmit = event => {
         event.preventDefault();
         const { name, email, password } = this.state;
-        const user = {//user object contains the data that is required in backend to create a account
+        const user = {
             name,
             email,
             password
         };
         // console.log(user);
         signup(user).then(data => {
-            //if the response we get has error as true then we just set that value in the state and it will get displayed
             if (data.error) this.setState({ error: data.error });
             else
                 this.setState({
@@ -38,7 +36,7 @@ class Signup extends Component {
                     name: "",
                     email: "",
                     password: "",
-                    open: true//when the input fields data that we entered successfully passed the validation then we need to set this as true so that the div block we created will be visible to disply the successfly created message
+                    open: true
                 });
         });
     };
@@ -51,7 +49,7 @@ class Signup extends Component {
                     onChange={this.handleChange("name")}
                     type="text"
                     className="form-control"
-                    value={name}//{/* this form-Control class helps in proving the the connection between the user entered value and the server*/}
+                    value={name}
                 />
             </div>
             <div className="form-group">
@@ -61,7 +59,7 @@ class Signup extends Component {
                     type="email"
                     className="form-control"
                     value={email}
-                />{/* this form-Control class helps in proving the the connection between the user entered value and the server*/}
+                />
             </div>
             <div className="form-group">
                 <label className="text-muted">Password</label>
@@ -70,11 +68,11 @@ class Signup extends Component {
                     type="password"
                     className="form-control"
                     value={password}
-                />{/* this form-Control class helps in proving the the connection between the user entered value and the server*/}
+                />
             </div>
             <button
                 onClick={this.clickSubmit}
-                className="btn btn-raised btn-success"
+                className="btn btn-raised btn-primary"
             >
                 Submit
             </button>

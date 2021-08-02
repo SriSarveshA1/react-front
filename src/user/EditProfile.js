@@ -11,19 +11,21 @@ class EditProfile extends Component {
             name: "",
             email: "",
             password: "",
-            error:"",
-            redirectToProfile: false
+            redirectToProfile: false,
+            error: "",
+            fileSize: 0,
+            loading: false//to make the div block that displays loading or not
+            
         };
     }
 
     init = userId => {
-        //here in this method we call the read() method that will that calls the fetch() method that returns the response after requesting backend and here in this method we work with the data
         const token = isAuthenticated().token;
-        read(userId, token).then(data => {//if the above part went to error we just console it or if it goes fine we just print the data
+        read(userId, token).then(data => {
             if (data.error) {
-                this.setState({ redirectToProfile: true });//so if the user is not authticated we ask the user to signin and make them redirect to signin
+                this.setState({ redirectToProfile: true });
             } else {
-                this.setState({//so we are setting the state user value with data we got after we successfully made a /post request to the signin route as we get extra information about the user in the data object
+                this.setState({
                     id: data._id,
                     name: data.name,
                     email: data.email,
@@ -34,62 +36,62 @@ class EditProfile extends Component {
     };
 
     componentDidMount() {
-        this.userData=new FormData();//this api will help us providing an interface that takes key,value pairs of data that we want to send to the backend
-        const userId = this.props.match.params.userId;//so using this way we can get the userid part of the parameter in the url
-        //when the component mounts we grab the userId from the the parameter in the url and pass it to the init method
+        this.userData = new FormData();
+        const userId = this.props.match.params.userId;
         this.init(userId);
     }
 
-    isValid=()=>{
-        const { name, email, password } = this.state;
-        if (name.length == 0) {
+    isValid = () => {
+        const { name, email, password, fileSize } = this.state;
+        if (fileSize > 100000) {
+            this.setState({ error: "File size should be less than 100kb" });
+            return false;
+        }
+        if (name.length === 0) {
             this.setState({ error: "Name is required" });
             return false;
         }
         // email@domain.com
-        if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {//the regular test is applied on email that will check @ and domain is there or not
+        if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
             this.setState({ error: "A valid Email is required" });
             return false;
         }
-        if (password.length >= 1 && password.length <= 5) {//so initially the password length is empty when the edit form is givin so that time no error will come and after entering some values that should be greater than 6
+        if (password.length >= 1 && password.length <= 5) {
             this.setState({
                 error: "Password must be at least 6 characters long"
             });
             return false;
         }
         return true;
-    }
-
-    handleChange = name => event => {
-        const value=name==='photo'?event.target.files[0]:event.target.value;//so when the event for the field triggered is name=(name,email,password) we need to grab the event.target.value or take the file event.target.files[0]
-        this.userData.set(name, value);//we are storing the data in the formData fields
-        this.setState({ [name]:value });//so even on the edit form we get when ever a value entered into the name field of the form will be grabbed here and setState will happen
     };
 
-    clickSubmit = event => {
-        //when ever the button is submitted we take the values in state to backend
+    handleChange = name => event => {
+        this.setState({ error: "" });
+        const value =
+            name === "photo" ? event.target.files[0] : event.target.value;
+
+        const fileSize = name === "photo" ? event.target.files[0].size : 0;
+        this.userData.set(name, value);
+        this.setState({ [name]: value, fileSize });
+    };
+
+    clickSubmit = event => { 
+         //when ever the button is submitted we take the values in state to backend
        //first we prevent the default behaviour of the user (default when the button is clicked the page reloads)
         event.preventDefault();
-        if(this.isValid())//if and only if the the  input data we entered is valid we call the below part
-        {
-            const { name, email, password } = this.state;
-            const user = {//user object contains the data that is required in backend to create a account
-            name,
-            email,
-            password: password || undefined//password can either be updated or not
-        };
-        // console.log(user);
-        const userId = this.props.match.params.userId;//so using this way we can get the userid part of the parameter in the url
-        const token = isAuthenticated().token;
+        this.setState({ loading: true });
 
-        update(userId, token, this.userData).then(data => {
-            if (data.error) this.setState({ error: data.error });
-            else
-                this.setState({
-                    redirectToProfile: true
-                });
-        });
+        if (this.isValid()) {
+            const userId = this.props.match.params.userId;
+            const token = isAuthenticated().token;
 
+            update(userId, token, this.userData).then(data => {
+                if (data.error) this.setState({ error: data.error });
+                else
+                    this.setState({
+                        redirectToProfile: true
+                    });
+            });
         }
     };
 
@@ -99,7 +101,7 @@ class EditProfile extends Component {
                 <label className="text-muted">Profile Photo</label>
                 <input
                     onChange={this.handleChange("photo")}
-                    type="file"   //so we will be getting an file 
+                    type="file"//so we will be getting an file 
                     accept="image/*"//this will make the what ever may be the image format this will be accepted
                     className="form-control"
                 />
@@ -133,31 +135,45 @@ class EditProfile extends Component {
             </div>
             <button
                 onClick={this.clickSubmit}
-                className="btn btn-raised btn-success"
+                className="btn btn-raised btn-primary"
             >
                 Update
             </button>
-        </form> //*for each input field we have value=this.state.Inputfieldname  that is because what ever value that you enter in the input field that will be get updated in the state and also here it will .so this is called controlled componnents*/}
-      
+        </form>//*for each input field we have value=this.state.Inputfieldname  that is because what ever value that you enter in the input field that will be get updated in the state and also here it will .so this is called controlled componnents*/}
     );
 
     render() {
-        const { id, name, email, password, redirectToProfile,error } = this.state;
+        const {
+            id,
+            name,
+            email,
+            password,
+            redirectToProfile,
+            error,
+            loading
+        } = this.state;
 
         if (redirectToProfile) {
-             //So once the user updated his profile this redirectToProfile will become true and Redirect will happen
             return <Redirect to={`/user/${id}`} />;
         }
-        
 
         return (
             <div className="container">
                 <h2 className="mt-5 mb-5">Edit Profile</h2>
+                <div
+                    className="alert alert-danger" //so if there is any error we just show in this div block
+                    style={{ display: error ? "" : "none" }}
+                >
+                    {error}
+                </div>
 
-                <div className="alert alert-danger"  //so if there is any error we just show in this div block
-                  style={{ display: error ? "" : "none" }}>
-                {error}
-               </div>
+                {loading ? (
+                    <div className="jumbotron text-center">
+                        <h2>Loading...</h2>
+                    </div>
+                ) : (
+                    ""
+                )}
 
                 {this.signupForm(name, email, password)}
             </div>

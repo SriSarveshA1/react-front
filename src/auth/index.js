@@ -1,34 +1,31 @@
-export const signup = user => {//this function will get the response and the response will be returned to the called line of this function so we can print the user about the validation mistakes
+export const signup = user => {
     return fetch(`${process.env.REACT_APP_API_URL}/signup`, {
-         //these are the information that we are sending to the backend
         method: "POST",
         headers: {
             Accept: "application/json",
-            "Content-Type": "application/json"//the conent type that we are passing should be json type
+            "Content-Type": "application/json"
         },
-        body: JSON.stringify(user)//we need to convert from the normal object to the JSON object
+        body: JSON.stringify(user)
     })
-        .then(response => {//so when the request made successfully
-            return response.json();//we just return the response object
+        .then(response => {
+            return response.json();
         })
-        .catch(err => console.log(err));//if the request was not successful 
+        .catch(err => console.log(err));
 };
 
-export const signin = user => {//this function will get the response and the response will be returned to the called line of this function so we can print the user about the validation mistakes
-    //console.log("sdsdsdsd=",process.env.REACT_APP_API_URL);
+export const signin = user => {
     return fetch(`${process.env.REACT_APP_API_URL}/signin`, {
-        //these are the information that we are sending to the backend
         method: "POST",
         headers: {
             Accept: "application/json",
-            "Content-Type": "application/json"//the conent type that we are passing should be json type
+            "Content-Type": "application/json"
         },
-        body: JSON.stringify(user)//we need to convert from the normal object to the JSON object
+        body: JSON.stringify(user)
     })
-        .then(response => {//so when the request made successfully
-            return response.json();//we just return the response object
+        .then(response => {
+            return response.json();
         })
-        .catch(err => console.log(err));////if the request was not successful 
+        .catch(err => console.log(err));
 };
 
 export const authenticate = (jwt, next) => {
@@ -38,36 +35,34 @@ export const authenticate = (jwt, next) => {
     }
 };
 
+export const setName = (name, next) => {
+    if (typeof window !== "undefined") {
+        localStorage.setItem("username", JSON.stringify(name));
+        next();
+    }
+};
+
 export const signout = next => {
-    //callback function that we want to get executed soon after we remove the jwt from the local storage
-    if (typeof window !== "undefined"){ 
-        //so the window object must be available to remove the jwt from the local storage 
-    localStorage.removeItem("jwt");//we remove the jwt key value pair
-    next();//as soon as we remove the jwt from the local storage we want the redirection page to be happen to home page /login page
-    //after this we send response to the backend
+    if (typeof window !== "undefined") localStorage.removeItem("jwt");
+    next();
     return fetch(`${process.env.REACT_APP_API_URL}/signout`, {
         method: "GET"
     })
-    //so if the sending get request to the backend went fine then we call the then method
-        .then(response => {//here we send the response in the json format
+        .then(response => {
             console.log("signout", response);
             return response.json();
         })
-        .catch(err => console.log(err));//if there is error occured we just console log it
-    }
+        .catch(err => console.log(err));
 };
 
 export const isAuthenticated = () => {
     if (typeof window == "undefined") {
-        //if there is not even window object generated we just return false and say not authenticated
         return false;
     }
 
     if (localStorage.getItem("jwt")) {
-        //if the jwt is present in the local storage then the user is authenticated
         return JSON.parse(localStorage.getItem("jwt"));
     } else {
-        //not authenticated
         return false;
     }
 };
