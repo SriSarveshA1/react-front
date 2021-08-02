@@ -11,6 +11,7 @@ class EditProfile extends Component {
             name: "",
             email: "",
             password: "",
+            error:"",
             redirectToProfile: false
         };
     }
@@ -38,6 +39,26 @@ class EditProfile extends Component {
         this.init(userId);
     }
 
+    isValid=()=>{
+        const { name, email, password } = this.state;
+        if (name.length == 0) {
+            this.setState({ error: "Name is required" });
+            return false;
+        }
+        // email@domain.com
+        if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {//the regular test is applied on email that will check @ and domain is there or not
+            this.setState({ error: "A valid Email is required" });
+            return false;
+        }
+        if (password.length >= 1 && password.length <= 5) {//so initially the password length is empty when the edit form is givin so that time no error will come and after entering some values that should be greater than 6
+            this.setState({
+                error: "Password must be at least 6 characters long"
+            });
+            return false;
+        }
+        return true;
+    }
+
     handleChange = name => event => {
         this.setState({ [name]: event.target.value });//so even on the edit form we get when ever a value entered into the name field of the form will be grabbed here and setState will happen
     };
@@ -46,11 +67,13 @@ class EditProfile extends Component {
         //when ever the button is submitted we take the values in state to backend
        //first we prevent the default behaviour of the user (default when the button is clicked the page reloads)
         event.preventDefault();
-        const { name, email, password } = this.state;
-        const user = {//user object contains the data that is required in backend to create a account
+        if(this.isValid())//if and only if the the  input data we entered is valid we call the below part
+        {
+            const { name, email, password } = this.state;
+            const user = {//user object contains the data that is required in backend to create a account
             name,
             email,
-            password: password || undefined
+            password: password || undefined//password can either be updated or not
         };
         // console.log(user);
         const userId = this.props.match.params.userId;//so using this way we can get the userid part of the parameter in the url
@@ -63,6 +86,8 @@ class EditProfile extends Component {
                     redirectToProfile: true
                 });
         });
+
+        }
     };
 
     signupForm = (name, email, password) => (
@@ -96,7 +121,7 @@ class EditProfile extends Component {
             </div>
             <button
                 onClick={this.clickSubmit}
-                className="btn btn-raised btn-primary"
+                className="btn btn-raised btn-success"
             >
                 Update
             </button>
@@ -105,16 +130,22 @@ class EditProfile extends Component {
     );
 
     render() {
-        const { id, name, email, password, redirectToProfile } = this.state;
+        const { id, name, email, password, redirectToProfile,error } = this.state;
 
         if (redirectToProfile) {
              //So once the user updated his profile this redirectToProfile will become true and Redirect will happen
             return <Redirect to={`/user/${id}`} />;
         }
+        
 
         return (
             <div className="container">
                 <h2 className="mt-5 mb-5">Edit Profile</h2>
+
+                <div className="alert alert-danger"  //so if there is any error we just show in this div block
+                  style={{ display: error ? "" : "none" }}>
+                {error}
+               </div>
 
                 {this.signupForm(name, email, password)}
             </div>

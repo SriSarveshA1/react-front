@@ -31,18 +31,14 @@ class Users extends Component {
                         className="card-img-top"
                         src={DefaultProfile}//we give the default profile of every user from the avatar
                         alt={user.name}
-                        style={{
-                            width: "100%",
-                            height: "15vw",
-                            objectFit: "cover"
-                        }}
+                        
                     />
                     <div className="card-body">
                         <h5 className="card-title">{user.name}</h5>
                         <p className="card-text">{user.email}</p>
                         <Link
                             to={`/user/${user._id}`}//so when we click the Link the url will be put along with the userId and thus we will take to that particular user profile component
-                            className="btn btn-raised btn-primary btn-sm"//{/*so when someone click this we will take them to that users profile*/}    
+                            className="btn btn-raised btn-success btn-sm"//{/*so when someone click this we will take them to that users profile*/}    
                         >
                             View Profile
                         </Link>

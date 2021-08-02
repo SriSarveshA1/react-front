@@ -53,11 +53,7 @@ class Profile extends Component {
                             className="card-img-top"
                             src={DefaultProfile}//we give the default profile of every user from the avatar
                             alt={user.name}//if the image is not visible we just print the user name
-                            style={{
-                                width: "100%",
-                                height: "15vw",
-                                objectFit: "cover"
-                            }}
+                           
                         />
                     </div>
 

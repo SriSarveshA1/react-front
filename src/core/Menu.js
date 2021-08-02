@@ -9,7 +9,7 @@ const isActive = (history, path) => {
 
 const Menu = ({ history }) => (//here from the props that we got from the withRouter(Menu) we just destruct the history object  and using withRouter(Menu) component we get the current location also
     <div>
-        <ul className="nav nav-tabs bg-primary">
+        <ul className="nav nav-tabs bg-success">
             <li className="nav-item">
                 <Link
                     className="nav-link"

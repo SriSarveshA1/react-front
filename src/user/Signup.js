@@ -74,7 +74,7 @@ class Signup extends Component {
             </div>
             <button
                 onClick={this.clickSubmit}
-                className="btn btn-raised btn-primary"
+                className="btn btn-raised btn-success"
             >
                 Submit
             </button>
