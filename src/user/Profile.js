@@ -37,20 +37,26 @@ class Profile extends Component {
 
     render() {
         const { redirectToSignin, user } = this.state;
-        
         if (redirectToSignin) return <Redirect to="/signin" />;
-        const photoUrl=user._id?`${process.env.REACT_APP_API_URL}/user/photo/${user._id}?{new Date().getTime()}`:`${DefaultProfile}`;//so if the id has some value which means the url has a id and we go the sepearate route we created for that id or else we go just show the DefaultProfile
-       
+
+        const photoUrl = user._id
+            ? `${process.env.REACT_APP_API_URL}/user/photo/${
+                  user._id
+              }?${new Date().getTime()}`
+            : DefaultProfile;
+
         return (
             <div className="container">
                 <h2 className="mt-5 mb-5">Profile</h2>
                 <div className="row">
                     <div className="col-md-6">
-                    <img style={{height:"200px",width:"auto"}} 
-                    className="img-thumbnail"
-                    src={photoUrl} 
-                    onError={i=>(i.target.src=`${DefaultProfile}`)}
-                    alt={user.name}/> 
+                        <img
+                            style={{ height: "200px", width: "auto" }}
+                            className="img-thumbnail"
+                            src={photoUrl}
+                            onError={i => (i.target.src = `${DefaultProfile}`)}
+                            alt={user.name}
+                        />
                     </div>
 
                     <div className="col-md-6">
@@ -76,11 +82,11 @@ class Profile extends Component {
                             )}
                     </div>
                 </div>
-                <div className="row">{/* Here in this block we are going to display the about field */}
-                    <div className="col md-12 mt-5 mb--5">
-                    <hr/>
-                       <p className="lead">{user.about}</p>
-                    <hr/>
+                <div className="row">
+                    <div className="col md-12 mt-5 mb-5">
+                        <hr />
+                        <p className="lead">{user.about}</p>
+                        <hr />
                     </div>
                 </div>
             </div>
