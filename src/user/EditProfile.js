@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { isAuthenticated } from "../auth";
 import { read, update } from "./apiUser";
 import { Redirect } from "react-router-dom";
+import DefaultProfile from "../images/avatar.jpg";
 
 class EditProfile extends Component {
     constructor() {
@@ -129,7 +130,7 @@ class EditProfile extends Component {
                 <input
                     onChange={this.handleChange("password")}
                     type="password"
-                    className="form-control"
+                    className="form-control "   
                     value={password}
                 />
             </div>
@@ -156,6 +157,8 @@ class EditProfile extends Component {
         if (redirectToProfile) {
             return <Redirect to={`/user/${id}`} />;
         }
+        
+        const photoUrl=id?`${process.env.REACT_APP_API_URL}/user/photo/${id}`:`${DefaultProfile}`;//so if the id has some value which means the url has a id and we go the sepearate route we created for that id or else we go just show the DefaultProfile
 
         return (
             <div className="container">
@@ -175,6 +178,7 @@ class EditProfile extends Component {
                     ""
                 )}
 
+                <img src={photoUrl} alt={name}/> 
                 {this.signupForm(name, email, password)}
             </div>
         );
