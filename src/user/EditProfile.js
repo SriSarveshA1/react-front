@@ -34,6 +34,7 @@ class EditProfile extends Component {
     };
 
     componentDidMount() {
+        this.userData=new FormData();//this api will help us providing an interface that takes key,value pairs of data that we want to send to the backend
         const userId = this.props.match.params.userId;//so using this way we can get the userid part of the parameter in the url
         //when the component mounts we grab the userId from the the parameter in the url and pass it to the init method
         this.init(userId);
@@ -60,7 +61,9 @@ class EditProfile extends Component {
     }
 
     handleChange = name => event => {
-        this.setState({ [name]: event.target.value });//so even on the edit form we get when ever a value entered into the name field of the form will be grabbed here and setState will happen
+        const value=name==='photo'?event.target.files[0]:event.target.value;//so when the event for the field triggered is name=(name,email,password) we need to grab the event.target.value or take the file event.target.files[0]
+        this.userData.set(name, value);//we are storing the data in the formData fields
+        this.setState({ [name]:value });//so even on the edit form we get when ever a value entered into the name field of the form will be grabbed here and setState will happen
     };
 
     clickSubmit = event => {
@@ -79,7 +82,7 @@ class EditProfile extends Component {
         const userId = this.props.match.params.userId;//so using this way we can get the userid part of the parameter in the url
         const token = isAuthenticated().token;
 
-        update(userId, token, user).then(data => {
+        update(userId, token, this.userData).then(data => {
             if (data.error) this.setState({ error: data.error });
             else
                 this.setState({
@@ -92,6 +95,15 @@ class EditProfile extends Component {
 
     signupForm = (name, email, password) => (
         <form>
+            <div className="form-group">
+                <label className="text-muted">Profile Photo</label>
+                <input
+                    onChange={this.handleChange("photo")}
+                    type="file"   //so we will be getting an file 
+                    accept="image/*"//this will make the what ever may be the image format this will be accepted
+                    className="form-control"
+                />
+            </div>
             <div className="form-group">
                 <label className="text-muted">Name</label>
                 <input

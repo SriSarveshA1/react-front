@@ -18,14 +18,14 @@ export const read = (userId, token) => {
 };
 
 export const update = (userId, token, user) => {
+    console.log("userdata:",user);
     return fetch(`${process.env.REACT_APP_API_URL}/user/${userId}`, {
         method: "PUT",
         headers: {
             Accept: "application/json",
-            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`
         },
-        body: JSON.stringify(user)
+        body: user//so we are sending a new form data to the server so we dont need to stringify
     })
         .then(response => {
             return response.json();
