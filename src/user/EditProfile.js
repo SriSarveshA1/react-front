@@ -158,7 +158,7 @@ class EditProfile extends Component {
             return <Redirect to={`/user/${id}`} />;
         }
         
-        const photoUrl=id?`${process.env.REACT_APP_API_URL}/user/photo/${id}`:`${DefaultProfile}`;//so if the id has some value which means the url has a id and we go the sepearate route we created for that id or else we go just show the DefaultProfile
+        const photoUrl=id?`${process.env.REACT_APP_API_URL}/user/photo/${id}?{new Date().getTime()}`:`${DefaultProfile}`;//so if the id has some value which means the url has a id and we go the sepearate route we created for that id or else we go just show the DefaultProfile
 
         return (
             <div className="container">
@@ -178,7 +178,11 @@ class EditProfile extends Component {
                     ""
                 )}
 
-                <img src={photoUrl} alt={name}/> 
+                <img style={{height:"200px",width:"auto"}} 
+                className="img-thumbnail"
+                src={photoUrl} 
+                onError={i=>(i.target.src=`${DefaultProfile}`)}
+                alt={name}/> 
                 {this.signupForm(name, email, password)}
             </div>
         );

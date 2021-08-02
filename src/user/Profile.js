@@ -37,23 +37,20 @@ class Profile extends Component {
 
     render() {
         const { redirectToSignin, user } = this.state;
+        
         if (redirectToSignin) return <Redirect to="/signin" />;
-
+        const photoUrl=user._id?`${process.env.REACT_APP_API_URL}/user/photo/${user._id}?{new Date().getTime()}`:`${DefaultProfile}`;//so if the id has some value which means the url has a id and we go the sepearate route we created for that id or else we go just show the DefaultProfile
+       
         return (
             <div className="container">
                 <h2 className="mt-5 mb-5">Profile</h2>
                 <div className="row">
                     <div className="col-md-6">
-                        <img
-                            className="card-img-top"
-                            src={DefaultProfile}
-                            alt={user.name}
-                            style={{
-                                width: "100%",
-                                height: "15vw",
-                                objectFit: "cover"
-                            }}
-                        />
+                    <img style={{height:"200px",width:"auto"}} 
+                    className="img-thumbnail"
+                    src={photoUrl} 
+                    onError={i=>(i.target.src=`${DefaultProfile}`)}
+                    alt={user.name}/> 
                     </div>
 
                     <div className="col-md-6">
