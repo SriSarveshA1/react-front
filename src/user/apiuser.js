@@ -64,3 +64,21 @@ export const updateUser = (user, next) => {
         }
     }
 };
+
+export const follow = (userId, token, followId) => {//so when the clickFollowButton is invoked the callapi will work and these arguments will be passed
+  
+    return fetch(`${process.env.REACT_APP_API_URL}/user/follow`, {
+        method: "PUT",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({userId,followId})//these to method is needed for addfollowing and addfollowers in backend
+    })
+        .then(response => {
+            return response.json();
+        })
+        .catch(err => console.log(err));
+};
+

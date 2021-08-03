@@ -25,6 +25,22 @@ class Profile extends Component {
         });
         return match;
     };
+    //the backend api call function is written in the apiUser.js and this clickFollowButton is passed along with the FollowProfileButton component and that will call this method
+    clickFollowButton =(callapi)=>{
+         //so when the user clicks the follow button in FollowProfileButton here in the profile component the state is also updated
+         const userId=isAuthenticated().user._id;
+         const token=isAuthenticated().token;
+         callapi(userId,token,this.state.user._id)//we are calling the callapi with the userId that is the authenticated userId that is stored in localStorage and pass the token and also the current visited user profiles id
+         .then(data=>{
+             if(data.error){
+                 this.setState({error:data.error});
+             }
+             // 
+             else{
+                 this.setState({user:data,following:!this.state.following});//so what ever may be the value of following we store the opostivve value when the user clicked clickfollowbutton
+             }
+         })
+    }
     init = userId => {
         const token = isAuthenticated().token;
         read(userId, token).then(data => {
@@ -93,7 +109,7 @@ class Profile extends Component {
                                     </Link>
                                     <DeleteUser userId={user._id} />
                                 </div>
-                            ):<FollowProfileButton following={this.state.following} /> //we will pass the status whether the logged in user follows this visited user or not based on the following status
+                            ):<FollowProfileButton following={this.state.following}  onButtononClick={this.clickFollowButton} /> //we will pass the status whether the logged in user follows this visited user or not based on the following status
                             }
                     </div>
                 </div>
