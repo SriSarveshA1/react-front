@@ -25,6 +25,7 @@ class Profile extends Component {
         });
         return match;
     };
+    //even this method is for unfollow with the same data but the unfollow method we wrote on apiUser handles the put request to the /unfollow route with the same data 
     //the backend api call function is written in the apiUser.js and this clickFollowButton is passed along with the FollowProfileButton component and that will call this method
     clickFollowButton =(callapi)=>{
          //so when the user clicks the follow button in FollowProfileButton here in the profile component the state is also updated

@@ -82,3 +82,22 @@ export const follow = (userId, token, followId) => {//so when the clickFollowBut
         .catch(err => console.log(err));
 };
 
+export const unfollow = (userId, token, unfollowId) => {//so when the clickUnFollowButton is invoked the callapi will work and these arguments will be passed
+  
+    return fetch(`${process.env.REACT_APP_API_URL}/user/unfollow`, {
+        method: "PUT",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({userId,unfollowId})//these to method is needed for removefollowing and removefollowers in backend
+    })
+        .then(response => {
+            return response.json();
+        })
+        .catch(err => console.log(err));
+};
+
+
+
