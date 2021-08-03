@@ -10,18 +10,31 @@ class Profile extends Component {
     constructor() {
         super();
         this.state = {
-            user: "",
-            redirectToSignin: false
+            user: { following: [], followers: [] },
+            redirectToSignin: false,
+            following: false,
+            error: ""
         };
     }
-
+    //Check Follow
+    checkFollow = user => {
+        const jwt = isAuthenticated();
+        const match = user.followers.find(follower => {
+            // one id has many other ids (followers) and vice versa
+            return follower._id === jwt.user._id;
+        });
+        return match;
+    };
     init = userId => {
         const token = isAuthenticated().token;
         read(userId, token).then(data => {
             if (data.error) {
                 this.setState({ redirectToSignin: true });
             } else {
-                this.setState({ user: data });
+                let following = this.checkFollow(data);//this data is a user whos profile we are currently in 
+                this.setState({ user: data, following });                                               
+                
+               
             }
         });
     };
@@ -80,7 +93,7 @@ class Profile extends Component {
                                     </Link>
                                     <DeleteUser userId={user._id} />
                                 </div>
-                            ):<FollowProfileButton/> 
+                            ):<FollowProfileButton following={this.state.following} /> //we will pass the status whether the logged in user follows this visited user or not based on the following status
                             }
                     </div>
                 </div>
