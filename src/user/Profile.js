@@ -4,6 +4,7 @@ import { Redirect, Link } from "react-router-dom";
 import { read } from "./apiUser";
 import DefaultProfile from "../images/avatar.jpg";
 import DeleteUser from "./DeleteUser";
+import FollowProfileButton from "./FollowProfileButton";
 
 class Profile extends Component {
     constructor() {
@@ -68,8 +69,8 @@ class Profile extends Component {
                             ).toDateString()}`}</p>
                         </div>
 
-                        {isAuthenticated().user &&
-                            isAuthenticated().user._id === user._id && (
+                        {isAuthenticated().user &&             //so if the user who is logged in and visiting his own profile we are display the edit profile and delete profile or else when he visits other users profile we will show follow and unfollow
+                            isAuthenticated().user._id === user._id ? (
                                 <div className="d-inline-block">
                                     <Link
                                         className="btn btn-raised btn-success mr-5"
@@ -79,7 +80,8 @@ class Profile extends Component {
                                     </Link>
                                     <DeleteUser userId={user._id} />
                                 </div>
-                            )}
+                            ):<FollowProfileButton/> 
+                            }
                     </div>
                 </div>
                 <div className="row">
