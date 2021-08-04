@@ -65,7 +65,24 @@ class ProfileTabs extends Component {
                    <div className="col-md-4">
                        <h3 className="text-primary">Posts</h3>
                        <hr/>{/* Here we are going to display the different posts posted by a user only the heading*/}
-                       {JSON.stringify(posts)}
+                       {posts.map((post,i)=>{
+                           //we will take every person from the list of followers and display
+                          return (  <div key={i}>
+                               {/* we are displaying both the profile image and the name and if we click any of them we will be taken to the profile page of the user*/}
+                                   <div>
+                                       <Link to={`/post/${post._id}`}>{/* this will take us to the sepearate page where we display the complete post content*/}
+                                             <div>
+                                              <p className="lead">{post.title}</p>
+                                             </div> 
+                                       </Link>
+                                       
+                                   </div>   
+                             
+
+                           </div>  
+                         ) 
+
+                       })}
                    </div>
                </div>
             </div>
