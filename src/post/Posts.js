@@ -21,35 +21,36 @@ class Posts extends Component {
         });
     }
 
-    renderPosts = posts=> (
-        <div className="row">
-            {posts.map((post, i) => (//it will look through all the post and display
-                <div className="card col-md-4" key={i}>
-                    {/*
-                    <img
-                        style={{ height: "200px", width: "auto" }}
-                        className="img-thumbnail"
-                        src={`${process.env.REACT_APP_API_URL}/user/photo/${
-                            user._id
-                        }`}
-                        onError={i => (i.target.src = `${DefaultProfile}`)}
-                        alt={user.name}
-                    />
-                    */}
-                    <div className="card-body">
-                        <h5 className="card-title">{post.title}</h5>
-                        <p className="card-text">{post.body}</p>
-                        <Link
-                            to={`/posts/${post._id}`}   //so when the user click the post they will be taken to the page where they can see the  entire post
-                            className="btn btn-raised btn-primary btn-sm"
-                        >
-                            Read More
-                        </Link>
-                    </div>
-                </div>
-            ))}
-        </div>
-    );
+    renderPosts = posts=> {
+       return (
+          <div className="row">
+            {posts.map((post, i) => { //it will look through all the post and display
+                  const posterId=post.postedBy?`/user/${post.postedBy._id}`:"";//so every post has a posterBy which says which user posted that post we need to get that userid if it exists or we simply dont display it
+                  const posterName=post.postedBy?post.postedBy.name:" Unknown";//so every post has a posterBy which says which user posted that post we need to get that usernameif it exists or we simply dont display it
+                  return (
+                  <div className="card col-md-4" key={i}>
+                     
+                      <div className="card-body">
+                          <h5 className="card-title">{post.title}</h5>
+                          <p className="card-text">{post.body.substring(0,100)}</p>{/* we want to display only the shorted content of the body*/}
+                          <br/>
+                          <p className="font-italic mark">{/* so in the bottom of the post card we will display the posted by and when we click it we will take us to the user who posted this post profile page */}
+                              Posted by<Link to={`${posterId}`}>{posterName}{" "}</Link>
+                              on {new Date(post.created).toDateString()} {/* so here we are just passing the post.created value of the post to the Date method and we conver it to string*/}
+                          </p>
+                          <Link
+                              to={`/posts/${post._id}`}   //so when the user click the post they will be taken to the page where they can see the  entire post
+                              className="btn btn-raised btn-primary btn-sm"
+                          >
+                              Read More
+                          </Link>
+                      </div>
+                  </div>
+                  )
+            })}
+           </div>
+        );
+    };
 
     render() {
         const { posts } = this.state;
