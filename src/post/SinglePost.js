@@ -12,6 +12,7 @@ class SinglePost extends Component {
                 console.log(data.error)
             }
             else{
+                console.log("data:",data)
                 this.setState({post:data})
             }
         })
@@ -20,6 +21,7 @@ class SinglePost extends Component {
         return (
             <div>
                 <h2>Single Post</h2>
+                
                 {this.props.match.params.postId}
             </div>
           );

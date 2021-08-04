@@ -25,7 +25,7 @@ export const list = () => {//this method is going to fetch all the posts
 };
 
 export const singlePost=(postId)=>{
-    return fetch(`${process.env.REACT_APP_API_URL}/post/postId`, {
+    return fetch(`${process.env.REACT_APP_API_URL}/post/${postId}`, {
         method: "GET"
     })
     .then(response => {
