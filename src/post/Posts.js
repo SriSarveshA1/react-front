@@ -40,7 +40,7 @@ class Posts extends Component {
                               on {new Date(post.created).toDateString()} {/* so here we are just passing the post.created value of the post to the Date method and we conver it to string*/}
                           </p>
                           <Link
-                              to={`/posts/${post._id}`}   //so when the user click the post they will be taken to the page where they can see the  entire post
+                              to={`/post/${post._id}`}   //so when the user click the post they will be taken to the page where they can see the  entire post
                               className="btn btn-raised btn-primary btn-sm"
                           >
                               Read More
