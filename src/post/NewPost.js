@@ -1,42 +1,41 @@
 import React, { Component } from "react";
 import { isAuthenticated } from "../auth";
-import {create } from "./apiPost";//we are importing this create method from the apiPost 
+import { create } from "./apiPost";
 import { Redirect } from "react-router-dom";
-import DefaultProfile from "../images/avatar.jpg";
 
 class NewPost extends Component {
     constructor() {
         super();
         this.state = {
-            title:"",
+            title: "",
             body: "",
             photo: "",
-            user:{},
             error: "",
-            fileSize:0,//for validation of the image that we upload for a image for a title
+            user: {},
+            fileSize: 0,
             loading: false,
-            redirectToProfile:false //initially we keep this as false and once we create a post and got the response we make it true and perform redirect   
+            redirectToProfile: false
         };
     }
 
-    
-
     componentDidMount() {
-        this.postData = new FormData();//when the component mounts we are going to get the data in the formdata from the frontend
-        //so when the component mounts we put the user in the state .so that way we can grab the user id or the name .so when we create a post we put that this user created this
-        this.setState({user: isAuthenticated().user}); 
+        this.postData = new FormData();
+        this.setState({ user: isAuthenticated().user });
     }
 
     isValid = () => {
-        const { title,body,fileSize} = this.state;
-        if (fileSize > 100000) {                                       //making the loading screen to not visible as we display the validation errors
-            this.setState({ error: "File size should be less than 100kb",loading: false});
+        const { title, body, fileSize } = this.state;
+        if (fileSize > 100000) {
+            this.setState({
+                error: "File size should be less than 100kb",
+                loading: false
+            });
             return false;
         }
-        if (title.length === 0||body.length==0) {//if there is no title or body is there we need to show an erro
-            this.setState({ error: "All fields are required",loading: false });
+        if (title.length === 0 || body.length === 0) {
+            this.setState({ error: "All fields are required", loading: false });
             return false;
-         }  
+        }
         return true;
     };
 
@@ -55,25 +54,24 @@ class NewPost extends Component {
         this.setState({ loading: true });
 
         if (this.isValid()) {
-            const userId = isAuthenticated().user._id;//so when the new post is created its done by the authenticated user from the local storage
+            const userId = isAuthenticated().user._id;
             const token = isAuthenticated().token;
 
             create(userId, token, this.postData).then(data => {
-                if (data.error) 
-                {
-                    this.setState({ error: data.error });
+                if (data.error) this.setState({ error: data.error });
+                else {
+                    this.setState({
+                        loading: false,
+                        title: "",
+                        body: "",
+                        redirectToProfile: true
+                    });
                 }
-                else{
-                  //after getting creating post and getting the response and also all the fiels should be made empty  
-                  this.setState({ loading: false,title:"",body:"",photo:'',redirectToProfile:true});
-
-                }
-                   
             });
         }
     };
 
-    newPostForm = (title,body) => (
+    newPostForm = (title, body) => (
         <form>
             <div className="form-group">
                 <label className="text-muted">Profile Photo</label>
@@ -93,7 +91,6 @@ class NewPost extends Component {
                     value={title}
                 />
             </div>
-            
 
             <div className="form-group">
                 <label className="text-muted">Body</label>
@@ -105,7 +102,6 @@ class NewPost extends Component {
                 />
             </div>
 
-           
             <button
                 onClick={this.clickSubmit}
                 className="btn btn-raised btn-primary"
@@ -117,7 +113,7 @@ class NewPost extends Component {
 
     render() {
         const {
-            title,  
+            title,
             body,
             photo,
             user,
@@ -125,15 +121,14 @@ class NewPost extends Component {
             loading,
             redirectToProfile
         } = this.state;
-         
+
         if (redirectToProfile) {
             return <Redirect to={`/user/${user._id}`} />;
         }
-        
-      
+
         return (
             <div className="container">
-                <h2 className="mt-5 mb-5">Create a new Post</h2>
+                <h2 className="mt-5 mb-5">Create a new post</h2>
                 <div
                     className="alert alert-danger"
                     style={{ display: error ? "" : "none" }}
@@ -148,7 +143,7 @@ class NewPost extends Component {
                 ) : (
                     ""
                 )}
-                
+
                 {this.newPostForm(title, body)}
             </div>
         );

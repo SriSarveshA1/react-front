@@ -65,8 +65,7 @@ export const updateUser = (user, next) => {
     }
 };
 
-export const follow = (userId, token, followId) => {//so when the clickFollowButton is invoked the callapi will work and these arguments will be passed
-  
+export const follow = (userId, token, followId) => {
     return fetch(`${process.env.REACT_APP_API_URL}/user/follow`, {
         method: "PUT",
         headers: {
@@ -74,7 +73,7 @@ export const follow = (userId, token, followId) => {//so when the clickFollowBut
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`
         },
-        body: JSON.stringify({userId,followId})//these to method is needed for addfollowing and addfollowers in backend
+        body: JSON.stringify({ userId, followId })
     })
         .then(response => {
             return response.json();
@@ -82,8 +81,7 @@ export const follow = (userId, token, followId) => {//so when the clickFollowBut
         .catch(err => console.log(err));
 };
 
-export const unfollow = (userId, token, unfollowId) => {//so when the clickUnFollowButton is invoked the callapi will work and these arguments will be passed
-  
+export const unfollow = (userId, token, unfollowId) => {
     return fetch(`${process.env.REACT_APP_API_URL}/user/unfollow`, {
         method: "PUT",
         headers: {
@@ -91,7 +89,7 @@ export const unfollow = (userId, token, unfollowId) => {//so when the clickUnFol
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`
         },
-        body: JSON.stringify({userId,unfollowId})//these to method is needed for removefollowing and removefollowers in backend
+        body: JSON.stringify({ userId, unfollowId })
     })
         .then(response => {
             return response.json();
@@ -99,8 +97,7 @@ export const unfollow = (userId, token, unfollowId) => {//so when the clickUnFol
         .catch(err => console.log(err));
 };
 
-export const findPeople=(userId, token) => {//so when the clickUnFollowButton is invoked the callapi will work and these arguments will be passed
-  
+export const findPeople = (userId, token) => {
     return fetch(`${process.env.REACT_APP_API_URL}/user/findpeople/${userId}`, {
         method: "GET",
         headers: {
@@ -108,11 +105,9 @@ export const findPeople=(userId, token) => {//so when the clickUnFollowButton is
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`
         }
-       
     })
         .then(response => {
             return response.json();
         })
         .catch(err => console.log(err));
 };
-
