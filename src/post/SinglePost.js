@@ -38,6 +38,14 @@ class SinglePost extends Component {
         });
     }
 
+    deleteConfirmed = () => {
+        let answer = window.confirm(
+            "Are you sure you want to delete your Post?"
+        );
+        if (answer) {
+            this.deletePost();
+        }
+    };
 
     renderPost=(post) => {
         const posterId=post.postedBy?`/user/${post.postedBy._id}`:"";//so every post has a posterBy which says which user posted that post we need to get that userid if it exists or we simply dont display it
@@ -65,7 +73,7 @@ class SinglePost extends Component {
                                  <button className="btn btn-raised btn-warning mr-5">
                                     Update post
                                 </button>
-                                <button onClick={this.deletePost} className="btn btn-raised btn-danger">{/* when this method is clicked we call this deletepost method which will make an api cal to backend"*/}
+                                <button onClick={this.deleteConfirmed} className="btn btn-raised btn-danger">{/* when this method is clicked we call this deletepost method which will make an api cal to backend"*/}
                                     Delete post
                                 </button>
                            
