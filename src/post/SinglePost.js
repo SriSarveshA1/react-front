@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import {singlePost} from './apiPost'
 import DefaultPost from "../images/mountains.jpg";
 import { Link } from "react-router-dom";
+import {isAuthenticated} from "../auth";
 
 class SinglePost extends Component {
     state={
@@ -37,9 +38,24 @@ class SinglePost extends Component {
                                 Posted by<Link to={`${posterId}`}>{posterName}{" "}</Link>
                                 on {new Date(post.created).toDateString()} {/* so here we are just passing the post.created value of the post to the Date method and we conver it to string*/}
                             </p>
-                            <Link to="/" className="btn btn-raised btn-primary btn-sm">{/* Back to home*/}
+                            <div className="d-inline-block">
+                            <Link to="/" className="btn btn-raised btn-primary btn-sm mr-5">{/* Back to home*/}
                                Back to All posts
                             </Link>
+                            {isAuthenticated().user &&             //so if the user who is logged in and visiting his own profile we are display the edit profile and delete profile or else when he visits other users profile we will show follow and unfollow
+                            isAuthenticated().user._id === post.postedBy._id &&
+                            <React.Fragment>
+                                 <button className="btn btn-raised btn-warning mr-5">
+                                    Update post
+                                </button>
+                                <button className="btn btn-raised btn-danger">
+                                    Update post
+                                </button>
+                           
+                           </React.Fragment>
+                            }
+                            </div>
+
                            
                         </div>
                 
