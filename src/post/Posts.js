@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { list } from "./apiPost";//so we will importing a method list that will give us the list of posts
-//import DefaultProfile from "../images/avatar.jpg";
+import DefaultPost from "../images/mountains.jpg";
 import { Link } from "react-router-dom";
 
 class Posts extends Component {
@@ -29,8 +29,9 @@ class Posts extends Component {
                   const posterName=post.postedBy?post.postedBy.name:" Unknown";//so every post has a posterBy which says which user posted that post we need to get that usernameif it exists or we simply dont display it
                   return (
                   <div className="card col-md-4" key={i}>
-                     
                       <div className="card-body">
+                                 {/* so we are using the route we created in backend to get the photo of the post and when the post doesnt have a picture we get error we handle that by displaying the default photo*/ }
+                          <img src={`${process.env.REACT_APP_API_URL}/post/photo/${post._id}`} alt={post.title} onError={i=>i.target.src=`${DefaultPost} `} className="img-thumbnail mb-3" style={{height:'200px',width:"auto"}} />
                           <h5 className="card-title">{post.title}</h5>
                           <p className="card-text">{post.body.substring(0,100)}</p>{/* we want to display only the shorted content of the body*/}
                           <br/>
