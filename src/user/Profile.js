@@ -6,6 +6,7 @@ import DefaultProfile from "../images/avatar.jpg";
 import DeleteUser from "./DeleteUser";
 import FollowProfileButton from "./FollowProfileButton";
 import ProfileTabs from "./ProfileTabs";
+import {listByUser} from "../post/apiPost";
 
 class Profile extends Component {
     constructor() {
@@ -14,7 +15,8 @@ class Profile extends Component {
             user: { following: [], followers: [] },
             redirectToSignin: false,
             following: false,
-            error: ""
+            error: "",
+            posts:[]//so in this array we are going to store all the posts posted by this user and we fetch this details in the componentMount
         };
     }
     //Check Follow
@@ -51,12 +53,25 @@ class Profile extends Component {
             } else {
                 let following = this.checkFollow(data);//this data is a user whos profile we are currently in 
                 this.setState({ user: data, following });                                               
-                
+                this.loadPosts(data._id)//this method will call the method we wrote to fetch all the posts from the particular user posted
                
             }
         });
     };
-
+    
+    loadPosts=userId=>{//this method performs the call to the method that does the api call to fetch the posts posted by a user
+        const token = isAuthenticated().token;
+        listByUser(userId, token)
+        .then(data=>{
+            if(data.error){
+                console.log(data.error);
+            }
+            else{
+                this.setState({posts: data})
+            }
+        }
+        )
+    }
     componentDidMount() {
         const userId = this.props.match.params.userId;
         this.init(userId);
@@ -68,7 +83,7 @@ class Profile extends Component {
     }
 
     render() {
-        const { redirectToSignin, user } = this.state;
+        const { redirectToSignin, user,posts} = this.state;
         if (redirectToSignin) return <Redirect to="/signin" />;
 
         const photoUrl = user._id
@@ -124,7 +139,9 @@ class Profile extends Component {
                         <hr />
                         <ProfileTabs 
                         followers={user.followers} 
-                        following={user.following}/>
+                        following={user.following}
+                        posts={posts}//we need to pass this list of posts to display
+                        />
                     </div>
                 </div>
             </div>

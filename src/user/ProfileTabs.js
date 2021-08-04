@@ -4,7 +4,7 @@ import DefaultProfile from '../images/avatar.jpg'
 class ProfileTabs extends Component {
     
     render() { 
-        const{following,followers}=this.props;
+        const{following,followers,posts}=this.props;
         return (
             <div>
                <div className="row">
@@ -64,7 +64,8 @@ class ProfileTabs extends Component {
 
                    <div className="col-md-4">
                        <h3 className="text-primary">Posts</h3>
-                       <hr/>
+                       <hr/>{/* Here we are going to display the different posts posted by a user only the heading*/}
+                       {JSON.stringify(posts)}
                    </div>
                </div>
             </div>

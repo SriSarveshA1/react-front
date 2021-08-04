@@ -56,8 +56,8 @@ class Posts extends Component {
     render() {
         const { posts } = this.state;
         return (
-            <div className="container">
-                <h2 className="mt-5 mb-5">Recent Posts</h2>
+            <div className="container">{/* if posts array is empty we display loading*/}
+                <h2 className="mt-5 mb-5">{!posts.length?"Loading ...":"Recent Posts"}</h2>
 
                 {this.renderPosts(posts)}
             </div>
