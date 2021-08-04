@@ -1,12 +1,13 @@
 import React, { Component } from "react";
-import {singlePost} from './apiPost'
+import {singlePost,remove} from './apiPost'
 import DefaultPost from "../images/mountains.jpg";
-import { Link } from "react-router-dom";
+import { Link,Redirect } from "react-router-dom";
 import {isAuthenticated} from "../auth";
 
 class SinglePost extends Component {
     state={
-        post:''
+        post:'',
+        redirectToHome:false
     }
     componentDidMount=()=>{
         const postId=this.props.match.params.postId;
@@ -21,6 +22,22 @@ class SinglePost extends Component {
             }
         })
     }
+
+    deletePost=()=>{
+        //this method will call the remove method which will make a api request to backend
+        const postId=this.props.match.params.postId;//we grab the postid 
+        const token=isAuthenticated().token;//the authenticated user must be the one who created this post
+        remove(postId,token)
+        .then(data=>{
+            if(data.error){
+                console.error(data.error)
+            }
+            else{
+                this.setState({redirectToHome:true});//so when this is true we redirect the user to the posts page
+            }
+        });
+    }
+
 
     renderPost=(post) => {
         const posterId=post.postedBy?`/user/${post.postedBy._id}`:"";//so every post has a posterBy which says which user posted that post we need to get that userid if it exists or we simply dont display it
@@ -48,8 +65,8 @@ class SinglePost extends Component {
                                  <button className="btn btn-raised btn-warning mr-5">
                                     Update post
                                 </button>
-                                <button className="btn btn-raised btn-danger">
-                                    Update post
+                                <button onClick={this.deletePost} className="btn btn-raised btn-danger">{/* when this method is clicked we call this deletepost method which will make an api cal to backend"*/}
+                                    Delete post
                                 </button>
                            
                            </React.Fragment>
@@ -64,6 +81,12 @@ class SinglePost extends Component {
           
     }
     render() { 
+
+        const{redirectToHome}=this.state;
+        if(redirectToHome)
+        {
+            return <Redirect to="/" />
+        }
         const {post}=this.state;
         return (
             <div className="container">

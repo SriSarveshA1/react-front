@@ -31,7 +31,7 @@ class Posts extends Component {
                   <div className="card col-md-4" key={i}>
                       <div className="card-body">
                                  {/* so we are using the route we created in backend to get the photo of the post and when the post doesnt have a picture we get error we handle that by displaying the default photo*/ }
-                          <img src={`${process.env.REACT_APP_API_URL}/post/photo/${post._id}`} alt={post.title} onError={i=>i.target.src=`${DefaultPost} `} className="img-thumbnail mb-3" style={{height:'200px',width:"auto"}} />
+                          <img src={`${process.env.REACT_APP_API_URL}/post/photo/${post._id}`} alt={post.title} onError={i=>i.target.src=`${DefaultPost} `} className="img-thumbnail mb-3" style={{height:'200px',width:"100%"}} />
                           <h5 className="card-title">{post.title}</h5>
                           <p className="card-text">{post.body.substring(0,100)}</p>{/* we want to display only the shorted content of the body*/}
                           <br/>
