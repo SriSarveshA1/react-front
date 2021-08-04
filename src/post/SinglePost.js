@@ -70,9 +70,9 @@ class SinglePost extends Component {
                             {isAuthenticated().user &&             //so if the user who is logged in and visiting his own profile we are display the edit profile and delete profile or else when he visits other users profile we will show follow and unfollow
                             isAuthenticated().user._id === post.postedBy._id &&
                             <React.Fragment>
-                                 <button className="btn btn-raised btn-warning mr-5">
-                                    Update post
-                                </button>
+                                 <Link to={`/post/edit/${post._id}`} className="btn btn-raised btn-warning btn-sm mr-5">{/* Back to home*/}
+                               Update posts
+                            </Link>{/* when we click this update post we will take to edit page*/}
                                 <button onClick={this.deleteConfirmed} className="btn btn-raised btn-danger">{/* when this method is clicked we call this deletepost method which will make an api cal to backend"*/}
                                     Delete post
                                 </button>
