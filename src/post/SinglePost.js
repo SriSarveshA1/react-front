@@ -9,11 +9,13 @@ class SinglePost extends Component {
         post: "",
         redirectToHome: false,
         like:false,//to check whether the logged in user liked this post or not
-        likes:0//to find the previous likes of this post
+        likes:0,//to find the previous likes of this post
+        redirectToSignin:false//when an unauthorized user tries to like the post we redirect to signin
     };
 
     checkLike=(likes)=>{
-        const userId=isAuthenticated().user._id;
+        //first we check whether the user is logged in and then get the id
+        const userId=isAuthenticated()&&isAuthenticated().user._id;
         let match=likes.indexOf(userId)!==-1;//this indexOf method checks whether the authenticated userId is there is list of users who liked if its not there it returns -1
         return match;
     }
@@ -30,6 +32,12 @@ class SinglePost extends Component {
 
     likeToggle=()=>{
         //when ever the like button is clicked we call this method and if the like:false we call the like api call or like:true we call the unlike api call
+        //here we check if the any unauthenticated user try to like our post we want them to signin 
+        if(!isAuthenticated())
+        {
+            this.setState({redirectToSignin: true});
+            return false; //so the below code will not run for an user who didnt logged
+        }
         let callApi=this.state.like?unlike:like;
         const userId=isAuthenticated().user._id;
         const postId=this.state.post._id;
@@ -77,7 +85,7 @@ class SinglePost extends Component {
         const posterId = post.postedBy ? `/user/${post.postedBy._id}` : "";
         const posterName = post.postedBy ? post.postedBy.name : " Unknown";
         const {like,likes}=this.state; 
-
+    
         return (
             <div className="card-body">
                 <img
@@ -137,11 +145,16 @@ class SinglePost extends Component {
     };
 
     render() {
-        if (this.state.redirectToHome) {
+        const { post,redirectToHome,redirectToSignin } = this.state;
+        if (redirectToHome) {
             return <Redirect to={`/`} />;
         }
+        if (redirectToSignin) {
+            return <Redirect to={`/signin`} />;
+        }
 
-        const { post } = this.state;
+
+        
         return (
             <div className="container">
                 <h2 className="display-2 mt-5 mb-5">{post.title}</h2>
