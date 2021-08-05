@@ -3,6 +3,7 @@ import { singlePost, remove,like,unlike } from "./apiPost";
 import DefaultPost from "../images/mountains.jpg";
 import { Link, Redirect } from "react-router-dom";
 import { isAuthenticated } from "../auth";
+import Comment from "./Comment";
 
 class SinglePost extends Component {
     state = {
@@ -10,7 +11,8 @@ class SinglePost extends Component {
         redirectToHome: false,
         like:false,//to check whether the logged in user liked this post or not
         likes:0,//to find the previous likes of this post
-        redirectToSignin:false//when an unauthorized user tries to like the post we redirect to signin
+        redirectToSignin:false,//when an unauthorized user tries to like the post we redirect to signin
+        comments:[]//to store the list of comments a post has
     };
 
     checkLike=(likes)=>{
@@ -30,6 +32,9 @@ class SinglePost extends Component {
         });
     };
 
+    updateComments=comments=>{
+        this.setState({comments})
+    }
     likeToggle=()=>{
         //when ever the like button is clicked we call this method and if the like:false we call the like api call or like:true we call the unlike api call
         //here we check if the any unauthenticated user try to like our post we want them to signin 
@@ -145,7 +150,7 @@ class SinglePost extends Component {
     };
 
     render() {
-        const { post,redirectToHome,redirectToSignin } = this.state;
+        const { post,redirectToHome,redirectToSignin,comments } = this.state;
         if (redirectToHome) {
             return <Redirect to={`/`} />;
         }
@@ -166,6 +171,7 @@ class SinglePost extends Component {
                 ) : (
                     this.renderPost(post)
                 )}
+                <Comment postId={post._id} comments={comments} updateComments={this.updateComments}/>{/* so when this update method is called from the comment component then we here the comments will be updated*/}
             </div>
         );
     }
