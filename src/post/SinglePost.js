@@ -94,7 +94,11 @@ class SinglePost extends Component {
                     }}
                 />
                 
-                <h3 onClick={this.likeToggle}>{likes} Likes </h3>
+                {like?(//so if the user already liked the post we show green thumb or else red thumb to like it
+                    <h3 onClick={this.likeToggle}><i className="fa fa-thumbs-up text-success bg-dark" style={{padding:'10px',borderRadius:'50%' }}/>{" "} {likes} Likes </h3>
+                ):(
+                    <h3 onClick={this.likeToggle}><i className="fa fa-thumbs-up text-warning bg-dark" style={{padding:'10px',borderRadius:'50%' }}/>{" "} {likes} Likes </h3>
+                )}
 
                 <p className="card-text">{post.body}</p>
                 <br />
