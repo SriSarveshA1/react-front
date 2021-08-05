@@ -112,3 +112,38 @@ export const unlike = (userId, token, postId) => {//we need to userId and postId
         })
         .catch(err => console.log(err));
 };
+
+
+export const comment = (userId, token, postId,comment) => {//we need to userId and postId while giving a like
+
+    return fetch(`${process.env.REACT_APP_API_URL}/post/comment`, {
+        method: "PUT",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        },
+        body:JSON.stringify({userId,postId,comment}) 
+    })
+        .then(response => {
+            return response.json();
+        })
+        .catch(err => console.log(err));
+};
+
+export const uncomment = (userId, token, postId,comment) => {//we need to userId and postId while giving a like
+
+    return fetch(`${process.env.REACT_APP_API_URL}/post/uncomment`, {
+        method: "PUT",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        },
+        body:JSON.stringify({userId,postId,comment}) //we send the comment and we search in the comments and find the rigt comment that we want to delete
+    })
+        .then(response => {
+            return response.json();
+        })
+        .catch(err => console.log(err));
+};
