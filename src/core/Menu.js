@@ -29,6 +29,15 @@ const Menu = ({ history }) => (
                     Users
                 </Link>
             </li>
+            <li className="nav-item">
+                        <Link
+                            to={`/post/create`}//so when the user who is not logged in and went to the create post and he will be redirected to the signin page(Using the privateRoute that is used for rendering the /post/create route)
+                            style={isActive(history, `/post/create`)}
+                            className="nav-link"          
+                        >
+                            Create Post
+                        </Link>
+            </li>
 
             {!isAuthenticated() && (
                 <>
@@ -65,15 +74,7 @@ const Menu = ({ history }) => (
                         </Link>
                     </li>
 
-                    <li className="nav-item">
-                        <Link
-                            to={`/post/create`}
-                            style={isActive(history, `/post/create`)}
-                            className="nav-link"
-                        >
-                            Create Post
-                        </Link>
-                    </li>
+                    
 
                     <li className="nav-item">
                         <Link
