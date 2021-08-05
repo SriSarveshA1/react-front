@@ -79,9 +79,7 @@ export const update = (postId, token, post) => {
         .catch(err => console.log(err));
 };
 
-
-export const like = (userId, token, postId) => {//we need to userId and postId while giving a like
-
+export const like = (userId, token, postId) => {
     return fetch(`${process.env.REACT_APP_API_URL}/post/like`, {
         method: "PUT",
         headers: {
@@ -89,15 +87,15 @@ export const like = (userId, token, postId) => {//we need to userId and postId w
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`
         },
-        body:JSON.stringify({userId,postId}) 
+        body: JSON.stringify({ userId, postId })
     })
         .then(response => {
             return response.json();
         })
         .catch(err => console.log(err));
 };
-export const unlike = (userId, token, postId) => {//we need to userId and postId while giving a like
 
+export const unlike = (userId, token, postId) => {
     return fetch(`${process.env.REACT_APP_API_URL}/post/unlike`, {
         method: "PUT",
         headers: {
@@ -105,7 +103,7 @@ export const unlike = (userId, token, postId) => {//we need to userId and postId
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`
         },
-        body:JSON.stringify({userId,postId}) 
+        body: JSON.stringify({ userId, postId })
     })
         .then(response => {
             return response.json();
@@ -113,9 +111,7 @@ export const unlike = (userId, token, postId) => {//we need to userId and postId
         .catch(err => console.log(err));
 };
 
-
-export const comment = (userId, token, postId,comment) => {//we need to userId and postId while giving a like
-
+export const comment = (userId, token, postId, comment) => {
     return fetch(`${process.env.REACT_APP_API_URL}/post/comment`, {
         method: "PUT",
         headers: {
@@ -123,7 +119,7 @@ export const comment = (userId, token, postId,comment) => {//we need to userId a
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`
         },
-        body:JSON.stringify({userId,postId,comment}) 
+        body: JSON.stringify({ userId, postId, comment })
     })
         .then(response => {
             return response.json();
@@ -131,8 +127,7 @@ export const comment = (userId, token, postId,comment) => {//we need to userId a
         .catch(err => console.log(err));
 };
 
-export const uncomment = (userId, token, postId,comment) => {//we need to userId and postId while giving a like
-
+export const uncomment = (userId, token, postId, comment) => {
     return fetch(`${process.env.REACT_APP_API_URL}/post/uncomment`, {
         method: "PUT",
         headers: {
@@ -140,7 +135,7 @@ export const uncomment = (userId, token, postId,comment) => {//we need to userId
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`
         },
-        body:JSON.stringify({userId,postId,comment}) //we send the comment and we search in the comments and find the rigt comment that we want to delete
+        body: JSON.stringify({ userId, postId, comment })
     })
         .then(response => {
             return response.json();

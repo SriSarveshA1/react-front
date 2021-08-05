@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { singlePost, remove,like,unlike } from "./apiPost";
+import { singlePost, remove, like, unlike } from "./apiPost";
 import DefaultPost from "../images/mountains.jpg";
 import { Link, Redirect } from "react-router-dom";
 import { isAuthenticated } from "../auth";
@@ -9,61 +9,59 @@ class SinglePost extends Component {
     state = {
         post: "",
         redirectToHome: false,
-        like:false,//to check whether the logged in user liked this post or not
-        likes:0,//to find the previous likes of this post
-        redirectToSignin:false,//when an unauthorized user tries to like the post we redirect to signin
-        comments:[]//to store the list of comments a post has
+        redirectToSignin: false,
+        like: false,
+        likes: 0,
+        comments: []
     };
 
-    checkLike=(likes)=>{
-        //first we check whether the user is logged in and then get the id
-        const userId=isAuthenticated()&&isAuthenticated().user._id;
-        let match=likes.indexOf(userId)!==-1;//this indexOf method checks whether the authenticated userId is there is list of users who liked if its not there it returns -1
+    checkLike = likes => {
+        const userId = isAuthenticated() && isAuthenticated().user._id;
+        let match = likes.indexOf(userId) !== -1;
         return match;
-    }
+    };
+
     componentDidMount = () => {
         const postId = this.props.match.params.postId;
         singlePost(postId).then(data => {
             if (data.error) {
                 console.log(data.error);
-            } else {                                                //here we check the authenticated users id is there in the likes array or not
-                this.setState({ post: data,likes:data.likes.length,like:this.checkLike(data.likes)});//when ever the component is mounted we get the likes from the backend and display it
+            } else {
+                this.setState({
+                    post: data,
+                    likes: data.likes.length,
+                    like: this.checkLike(data.likes),
+                    comments: data.comments
+                });
             }
         });
     };
 
-    updateComments=comments=>{
-        this.setState({comments})
-    }
-    likeToggle=()=>{
-        //when ever the like button is clicked we call this method and if the like:false we call the like api call or like:true we call the unlike api call
-        //here we check if the any unauthenticated user try to like our post we want them to signin 
-        if(!isAuthenticated())
-        {
-            this.setState({redirectToSignin: true});
-            return false; //so the below code will not run for an user who didnt logged
+    updateComments = comments => {
+        this.setState({ comments });
+    };
+
+    likeToggle = () => {
+        if (!isAuthenticated()) {
+            this.setState({ redirectToSignin: true });
+            return false;
         }
-        let callApi=this.state.like?unlike:like;
-        const userId=isAuthenticated().user._id;
-        const postId=this.state.post._id;
-        const token=isAuthenticated().token;
+        let callApi = this.state.like ? unlike : like;
+        const userId = isAuthenticated().user._id;
+        const postId = this.state.post._id;
+        const token = isAuthenticated().token;
 
-        callApi(userId,token,postId)
-        .then(data=>{
-            if(data.error)
-            {
+        callApi(userId, token, postId).then(data => {
+            if (data.error) {
                 console.log(data.error);
-            }
-            else{
+            } else {
                 this.setState({
-                    like:!this.state.like,
-                    likes:data.likes.length//new likes array length
-                    });//previously if it is like we change to unlike and viceversa
+                    like: !this.state.like,
+                    likes: data.likes.length
+                });
             }
-        })
-
-    }
-
+        });
+    };
 
     deletePost = () => {
         const postId = this.props.match.params.postId;
@@ -79,7 +77,7 @@ class SinglePost extends Component {
 
     deleteConfirmed = () => {
         let answer = window.confirm(
-            "Are you sure you want to delete your account?"
+            "Are you sure you want to delete your post?"
         );
         if (answer) {
             this.deletePost();
@@ -89,8 +87,9 @@ class SinglePost extends Component {
     renderPost = post => {
         const posterId = post.postedBy ? `/user/${post.postedBy._id}` : "";
         const posterName = post.postedBy ? post.postedBy.name : " Unknown";
-        const {like,likes}=this.state; 
-    
+
+        const { like, likes } = this.state;
+
         return (
             <div className="card-body">
                 <img
@@ -106,11 +105,23 @@ class SinglePost extends Component {
                         objectFit: "cover"
                     }}
                 />
-                
-                {like?(//so if the user already liked the post we show green thumb or else red thumb to like it
-                    <h3 onClick={this.likeToggle}><i className="fa fa-thumbs-up text-success bg-dark" style={{padding:'10px',borderRadius:'50%' }}/>{" "} {likes} Likes </h3>
-                ):(
-                    <h3 onClick={this.likeToggle}><i className="fa fa-thumbs-up text-warning bg-dark" style={{padding:'10px',borderRadius:'50%' }}/>{" "} {likes} Likes </h3>
+
+                {like ? (
+                    <h3 onClick={this.likeToggle}>
+                        <i
+                            className="fa fa-thumbs-up text-success bg-dark"
+                            style={{ padding: "10px", borderRadius: "50%" }}
+                        />{" "}
+                        {likes} Like
+                    </h3>
+                ) : (
+                    <h3 onClick={this.likeToggle}>
+                        <i
+                            className="fa fa-thumbs-up text-warning bg-dark"
+                            style={{ padding: "10px", borderRadius: "50%" }}
+                        />{" "}
+                        {likes} Like
+                    </h3>
                 )}
 
                 <p className="card-text">{post.body}</p>
@@ -150,16 +161,14 @@ class SinglePost extends Component {
     };
 
     render() {
-        const { post,redirectToHome,redirectToSignin,comments } = this.state;
+        const { post, redirectToHome, redirectToSignin, comments } = this.state;
+
         if (redirectToHome) {
             return <Redirect to={`/`} />;
-        }
-        if (redirectToSignin) {
+        } else if (redirectToSignin) {
             return <Redirect to={`/signin`} />;
         }
 
-
-        
         return (
             <div className="container">
                 <h2 className="display-2 mt-5 mb-5">{post.title}</h2>
@@ -171,7 +180,12 @@ class SinglePost extends Component {
                 ) : (
                     this.renderPost(post)
                 )}
-                <Comment postId={post._id} comments={comments} updateComments={this.updateComments}/>{/* so when this update method is called from the comment component then we here the comments will be updated*/}
+
+                <Comment
+                    postId={post._id}
+                    comments={comments.reverse()}//we get the comments that are posted very recently
+                    updateComments={this.updateComments}
+                />
             </div>
         );
     }
