@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { singlePost, remove } from "./apiPost";
+import { singlePost, remove,like,unlike } from "./apiPost";
 import DefaultPost from "../images/mountains.jpg";
 import { Link, Redirect } from "react-router-dom";
 import { isAuthenticated } from "../auth";
@@ -7,19 +7,50 @@ import { isAuthenticated } from "../auth";
 class SinglePost extends Component {
     state = {
         post: "",
-        redirectToHome: false
+        redirectToHome: false,
+        like:false,//to check whether the logged in user liked this post or not
+        likes:0//to find the previous likes of this post
     };
 
+    checkLike=(likes)=>{
+        const userId=isAuthenticated().user._id;
+        let match=likes.indexOf(userId)!==-1;//this indexOf method checks whether the authenticated userId is there is list of users who liked if its not there it returns -1
+        return match;
+    }
     componentDidMount = () => {
         const postId = this.props.match.params.postId;
         singlePost(postId).then(data => {
             if (data.error) {
                 console.log(data.error);
-            } else {
-                this.setState({ post: data });
+            } else {                                                //here we check the authenticated users id is there in the likes array or not
+                this.setState({ post: data,likes:data.likes.length,like:this.checkLike(data.likes)});//when ever the component is mounted we get the likes from the backend and display it
             }
         });
     };
+
+    likeToggle=()=>{
+        //when ever the like button is clicked we call this method and if the like:false we call the like api call or like:true we call the unlike api call
+        let callApi=this.state.like?unlike:like;
+        const userId=isAuthenticated().user._id;
+        const postId=this.state.post._id;
+        const token=isAuthenticated().token;
+
+        callApi(userId,token,postId)
+        .then(data=>{
+            if(data.error)
+            {
+                console.log(data.error);
+            }
+            else{
+                this.setState({
+                    like:!this.state.like,
+                    likes:data.likes.length//new likes array length
+                    });//previously if it is like we change to unlike and viceversa
+            }
+        })
+
+    }
+
 
     deletePost = () => {
         const postId = this.props.match.params.postId;
@@ -45,6 +76,7 @@ class SinglePost extends Component {
     renderPost = post => {
         const posterId = post.postedBy ? `/user/${post.postedBy._id}` : "";
         const posterName = post.postedBy ? post.postedBy.name : " Unknown";
+        const {like,likes}=this.state; 
 
         return (
             <div className="card-body">
@@ -61,6 +93,8 @@ class SinglePost extends Component {
                         objectFit: "cover"
                     }}
                 />
+                
+                <h3 onClick={this.likeToggle}>{likes} Likes </h3>
 
                 <p className="card-text">{post.body}</p>
                 <br />
