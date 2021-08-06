@@ -7,7 +7,7 @@ import DefaultProfile from "../images/avatar.jpg";
 class Comment extends Component {
     state = {
         text: "",
-        error: ""//for comment validation   
+        error: ""
     };
 
     handleChange = event => {
@@ -30,7 +30,7 @@ class Comment extends Component {
     addComment = e => {
         e.preventDefault();
 
-        if (!isAuthenticated()) {//only authenticated user can comment
+        if (!isAuthenticated()) {
             this.setState({ error: "Please signin to leave a comment" });
             return false;
         }
@@ -59,7 +59,7 @@ class Comment extends Component {
         const token = isAuthenticated().token;
         const postId = this.props.postId;
 
-        uncomment(userId, token, postId, comment).then(data => {//this method will call a method in apipost that will make uncomment route request which will pull the comment from the comments array
+        uncomment(userId, token, postId, comment).then(data => {
             if (data.error) {
                 console.log(data.error);
             } else {
@@ -90,7 +90,7 @@ class Comment extends Component {
                         <input
                             type="text"
                             onChange={this.handleChange}
-                            value={this.state.text}//so as we change the content it will be stored here
+                            value={this.state.text}
                             className="form-control"
                             placeholder="Leave a comment..."
                         />
@@ -142,15 +142,15 @@ class Comment extends Component {
                                         </Link>
                                         on{" "}
                                         {new Date(
-                                            comment.created //we are going to pring the date the post is created
+                                            comment.created
                                         ).toDateString()}
                                         <span>
                                             {isAuthenticated().user &&
-                                                isAuthenticated().user._id === //only the authenticated user who created the comment can delete it
+                                                isAuthenticated().user._id ===
                                                     comment.postedBy._id && (
                                                     <>
                                                         <span
-                                                            onClick={() =>//so as a callback funtion this deleteConfirmed will be executed as soon as we get an yes in the prompt in the window
+                                                            onClick={() =>
                                                                 this.deleteConfirmed(
                                                                     comment
                                                                 )

@@ -183,7 +183,7 @@ class SinglePost extends Component {
 
                 <Comment
                     postId={post._id}
-                    comments={comments.reverse()}//we get the comments that are posted very recently
+                    comments={comments.reverse()}
                     updateComments={this.updateComments}
                 />
             </div>
