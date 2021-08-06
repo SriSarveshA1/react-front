@@ -39,7 +39,17 @@ const Menu = ({ history }) => (
                     Create Post
                 </Link>
             </li>
-
+            {isAuthenticated() && isAuthenticated().user.role === "admin" && (//only the authenticated and the user who has admin role can enter into this admin tab
+            <li className="nav-item">
+             <Link
+              to={`/admin`}
+              style={isActive(history, `/admin`)}
+              className="nav-link"
+             >
+               Admin
+            </Link>
+            </li>
+             )}
             {!isAuthenticated() && (
                 <>
                     <li className="nav-item">

@@ -94,12 +94,21 @@ class EditProfile extends Component {
 
             update(userId, token, this.userData).then(data => {
                 if (data.error) this.setState({ error: data.error });
-                else
+                else{
+                    //if the user is admin who changed someones profile name we just do redirect 
+                    if (isAuthenticated().user.role === "admin") {
+                        this.setState({
+                            redirectToProfile: true
+                        });
+                    }
+                        else{//if the user himself changes we update the localStorage and the profile tab name is also changed
                     updateUser(data, () => {
                         this.setState({
                             redirectToProfile: true
                         });
                     });
+                }
+                }
             });
         }
     };

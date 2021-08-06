@@ -119,7 +119,7 @@ class Signup extends Component {
                 <input
                     onChange={this.recaptchaHandler}
                     type="text"
-                    className="form-control"
+                    className="form-control"    
                 />
             </div>
 
