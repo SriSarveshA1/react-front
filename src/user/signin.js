@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
+import { Redirect ,Link} from "react-router-dom";
 import { signin, authenticate } from "../auth";
+import ForgotPassword from "./ForgotPassword";
 
 class Signin extends Component {
     constructor() {
@@ -102,6 +103,12 @@ class Signin extends Component {
                 )}
 
                 {this.signinForm(email, password)}
+                <p>
+                     <Link to="/forgot-password" className="text-danger">{/* if this forgot password is clicked then of ForgotPassword componenet will be rendered*/}
+                     {" "}
+                     Forgot Password
+                    </Link>
+               </p>
             </div>
         );
     }
