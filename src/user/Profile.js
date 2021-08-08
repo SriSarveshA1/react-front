@@ -13,7 +13,7 @@ class Profile extends Component {
         super();
         this.state = {
             user: { following: [], followers: [] },
-            redirectToSignin: false,
+            redirectTosigninc: false,
             following: false,
             error: "",
             posts: []
@@ -47,7 +47,7 @@ class Profile extends Component {
         const token = isAuthenticated().token;
         read(userId, token).then(data => {
             if (data.error) {
-                this.setState({ redirectToSignin: true });
+                this.setState({ redirectTosigninc: true });
             } else {
                 let following = this.checkFollow(data);
                 this.setState({ user: data, following });
@@ -78,8 +78,8 @@ class Profile extends Component {
     }
 
     render() {
-        const { redirectToSignin, user, posts } = this.state;
-        if (redirectToSignin) return <Redirect to="/signin" />;
+        const { redirectTosigninc, user, posts } = this.state;
+        if (redirectTosigninc) return <Redirect to="/signin" />;
 
         const photoUrl = user._id
             ? `${process.env.REACT_APP_API_URL}/user/photo/${

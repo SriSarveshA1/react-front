@@ -3,7 +3,7 @@ import { Link, Redirect } from "react-router-dom";
 import { signin, authenticate } from "../auth";
 import SocialLogin from "./SocialLogin";
 
-class Signin extends Component {
+class signinc extends Component {
     constructor() {
         super();
         this.state = {
@@ -177,4 +177,4 @@ class Signin extends Component {
     }
 }
 
-export default Signin;
+export default signinc;

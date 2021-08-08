@@ -9,7 +9,7 @@ class SinglePost extends Component {
     state = {
         post: "",
         redirectToHome: false,
-        redirectToSignin: false,
+        redirectTosigninc: false,
         like: false,
         likes: 0,
         comments: []
@@ -43,7 +43,7 @@ class SinglePost extends Component {
 
     likeToggle = () => {
         if (!isAuthenticated()) {
-            this.setState({ redirectToSignin: true });
+            this.setState({ redirectTosigninc: true });
             return false;
         }
         let callApi = this.state.like ? unlike : like;
@@ -187,11 +187,11 @@ class SinglePost extends Component {
     };
 
     render() {
-        const { post, redirectToHome, redirectToSignin, comments } = this.state;
+        const { post, redirectToHome, redirectTosigninc, comments } = this.state;
 
         if (redirectToHome) {
             return <Redirect to={`/`} />;
-        } else if (redirectToSignin) {
+        } else if (redirectTosigninc) {
             return <Redirect to={`/signin`} />;
         }
 
