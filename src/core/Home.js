@@ -1,5 +1,5 @@
 import React from "react";
-import Posts from "../post/Posts";
+import Posts from "../post/components/Posts";
 
 const Home = () => (
     <div>

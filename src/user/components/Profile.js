@@ -1,19 +1,19 @@
 import React, { Component } from "react";
-import { isAuthenticated } from "../auth";
+import { isAuthenticated } from "../../auth";
 import { Redirect, Link } from "react-router-dom";
-import { read } from "./apiUser";
-import DefaultProfile from "../images/avatar.jpg";
+import { read } from "../apiUser";
+import DefaultProfile from "../../images/avatar.jpg";
 import DeleteUser from "./DeleteUser";
 import FollowProfileButton from "./FollowProfileButton";
 import ProfileTabs from "./ProfileTabs";
-import { listByUser } from "../post/apiPost";
+import { listByUser } from "../../post/apiPost";
 
 class Profile extends Component {
     constructor() {
         super();
         this.state = {
             user: { following: [], followers: [] },
-            redirectTosigninc: false,
+            redirectToSignin: false,
             following: false,
             error: "",
             posts: []
@@ -47,7 +47,7 @@ class Profile extends Component {
         const token = isAuthenticated().token;
         read(userId, token).then(data => {
             if (data.error) {
-                this.setState({ redirectTosigninc: true });
+                this.setState({ redirectToSignin: true });
             } else {
                 let following = this.checkFollow(data);
                 this.setState({ user: data, following });
@@ -78,8 +78,8 @@ class Profile extends Component {
     }
 
     render() {
-        const { redirectTosigninc, user, posts } = this.state;
-        if (redirectTosigninc) return <Redirect to="/signin" />;
+        const { redirectToSignin, user, posts } = this.state;
+        if (redirectToSignin) return <Redirect to="/signin" />;
 
         const photoUrl = user._id
             ? `${process.env.REACT_APP_API_URL}/user/photo/${

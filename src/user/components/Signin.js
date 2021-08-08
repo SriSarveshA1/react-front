@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { Link, Redirect } from "react-router-dom";
-import { signin, authenticate } from "../auth";
+import { signin, authenticate } from "../../auth";
 import SocialLogin from "./SocialLogin";
 
-class signinc extends Component {
+class Signin extends Component {
     constructor() {
         super();
         this.state = {
@@ -177,4 +177,4 @@ class signinc extends Component {
     }
 }
 
-export default signinc;
+export default Signin;

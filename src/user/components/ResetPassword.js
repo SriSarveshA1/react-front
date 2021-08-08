@@ -1,23 +1,30 @@
 import React, { Component } from "react";
-import { forgotPassword } from "../auth";
+import { resetPassword } from "../../auth";
 
-class ForgotPassword extends Component {
-    state = {
-        email: "",
-        message: "",
-        error: ""
-    };
+class ResetPassword extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            newPassword: "",
+            message: "",
+            error: ""
+        };
+    }
 
-    forgotPassword = e => {
+    resetPassword = e => {
         e.preventDefault();
         this.setState({ message: "", error: "" });
-        forgotPassword(this.state.email).then(data => {
+
+        resetPassword({
+            newPassword: this.state.newPassword,
+            resetPasswordLink: this.props.match.params.resetPasswordToken
+        }).then(data => {
             if (data.error) {
                 console.log(data.error);
-                this.setState({ error: data.error });
+                this.setState({ error: data.error, newPassword: "" });
             } else {
                 console.log(data.message);
-                this.setState({ message: data.message });
+                this.setState({ message: data.message, newPassword: "" });
             }
         });
     };
@@ -25,7 +32,7 @@ class ForgotPassword extends Component {
     render() {
         return (
             <div className="container">
-                <h2 className="mt-5 mb-5">Ask for Password Reset</h2>
+                <h2 className="mt-5 mb-5">Reset your Password</h2>
 
                 {this.state.message && (
                     <h4 className="bg-success">{this.state.message}</h4>
@@ -34,17 +41,19 @@ class ForgotPassword extends Component {
                     <h4 className="bg-warning">{this.state.error}</h4>
                 )}
 
-                <form>
+                <form
+                    style={{ display: this.state.message.length ? "none" : "" }}
+                >
                     <div className="form-group mt-5">
                         <input
-                            type="email"
+                            type="password"
                             className="form-control"
-                            placeholder="Your email address"
-                            value={this.state.email}
-                            name="email"
+                            placeholder="Your new password"
+                            value={this.state.newPassword}
+                            name="newPassword"
                             onChange={e =>
                                 this.setState({
-                                    email: e.target.value,
+                                    newPassword: e.target.value,
                                     message: "",
                                     error: ""
                                 })
@@ -53,10 +62,10 @@ class ForgotPassword extends Component {
                         />
                     </div>
                     <button
-                        onClick={this.forgotPassword}
+                        onClick={this.resetPassword}
                         className="btn btn-raised btn-success"
                     >
-                        Send Password Rest Link
+                        Reset Password
                     </button>
                 </form>
             </div>
@@ -64,4 +73,4 @@ class ForgotPassword extends Component {
     }
 }
 
-export default ForgotPassword;
+export default ResetPassword;

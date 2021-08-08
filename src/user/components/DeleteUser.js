@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
-import { isAuthenticated } from "../auth";
-import { remove } from "./apiUser";
-import { signout } from "../auth";
+import { isAuthenticated } from "../../auth";
+import { remove } from "../apiUser";
+import { signout } from "../../auth";
 
 class DeleteUser extends Component {
     state = {

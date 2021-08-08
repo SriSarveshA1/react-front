@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import { findPeople, follow } from "./apiUser";
-import DefaultProfile from "../images/avatar.jpg";
+import { findPeople, follow } from "../apiUser";
+import DefaultProfile from "../../images/avatar.jpg";
 import { Link } from "react-router-dom";
-import { isAuthenticated } from "../auth";
+import { isAuthenticated } from "../../auth";
 
 class FindPeople extends Component {
     constructor() {

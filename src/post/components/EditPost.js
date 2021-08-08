@@ -1,31 +1,47 @@
 import React, { Component } from "react";
-import { isAuthenticated } from "../auth";
-import { create } from "./apiPost";
+import { singlePost, update } from "../apiPost";
+import { isAuthenticated } from "../../auth";
 import { Redirect } from "react-router-dom";
+import DefaultPost from "../../images/mountains.jpg";
 
-class NewPost extends Component {
+class EditPost extends Component {
     constructor() {
         super();
         this.state = {
+            id: "",
             title: "",
             body: "",
-            photo: "",
+            redirectToProfile: false,
             error: "",
-            user: {},
             fileSize: 0,
-            loading: false,
-            redirectToProfile: false
+            loading: false
         };
     }
 
+    init = postId => {
+        singlePost(postId).then(data => {
+            if (data.error) {
+                this.setState({ redirectToProfile: true });
+            } else {
+                this.setState({
+                    id: data.postedBy._id,
+                    title: data.title,
+                    body: data.body,
+                    error: ""
+                });
+            }
+        });
+    };
+
     componentDidMount() {
         this.postData = new FormData();
-        this.setState({ user: isAuthenticated().user });
+        const postId = this.props.match.params.postId;
+        this.init(postId);
     }
 
     isValid = () => {
         const { title, body, fileSize } = this.state;
-        if (fileSize > 100000) {
+        if (fileSize > 1000000) {
             this.setState({
                 error: "File size should be less than 100kb",
                 loading: false
@@ -54,10 +70,10 @@ class NewPost extends Component {
         this.setState({ loading: true });
 
         if (this.isValid()) {
-            const userId = isAuthenticated().user._id;
+            const postId = this.props.match.params.postId;
             const token = isAuthenticated().token;
 
-            create(userId, token, this.postData).then(data => {
+            update(postId, token, this.postData).then(data => {
                 if (data.error) this.setState({ error: data.error });
                 else {
                     this.setState({
@@ -71,7 +87,7 @@ class NewPost extends Component {
         }
     };
 
-    newPostForm = (title, body) => (
+    editPostForm = (title, body) => (
         <form>
             <div className="form-group">
                 <label className="text-muted">Post Photo</label>
@@ -104,31 +120,31 @@ class NewPost extends Component {
 
             <button
                 onClick={this.clickSubmit}
-                className="btn btn-raised btn-primary"
+                className="btn btn-raised btn-success"
             >
-                Create Post
+                Update Post
             </button>
         </form>
     );
 
     render() {
         const {
+            id,
             title,
             body,
-            photo,
-            user,
+            redirectToProfile,
             error,
-            loading,
-            redirectToProfile
+            loading
         } = this.state;
 
         if (redirectToProfile) {
-            return <Redirect to={`/user/${user._id}`} />;
+            return <Redirect to={`/user/${isAuthenticated().user._id}`} />;
         }
 
         return (
             <div className="container">
-                <h2 className="mt-5 mb-5">Create a new post</h2>
+                <h2 className="mt-5 mb-5">{title}</h2>
+
                 <div
                     className="alert alert-danger"
                     style={{ display: error ? "" : "none" }}
@@ -144,10 +160,24 @@ class NewPost extends Component {
                     ""
                 )}
 
-                {this.newPostForm(title, body)}
+                <img
+                    style={{ height: "200px", width: "auto" }}
+                    className="img-thumbnail"
+                    src={`${
+                        process.env.REACT_APP_API_URL
+                    }/post/photo/${id}?${new Date().getTime()}`}
+                    onError={i => (i.target.src = `${DefaultPost}`)}
+                    alt={title}
+                />
+
+               {isAuthenticated().user.role === "admin" &&
+                    this.editPostForm(title, body)}
+
+                {isAuthenticated().user._id === id &&
+                    this.editPostForm(title, body)}
             </div>
         );
     }
 }
 
-export default NewPost;
+export default EditPost;

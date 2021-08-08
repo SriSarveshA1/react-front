@@ -2,13 +2,10 @@
   "name": "react-front",
   "version": "0.1.0",
   "private": true,
-  "engines": {
-    "node": "^16.6.1"
-  },
   "dependencies": {
     "heroku": "^7.56.1",
     "lodash": "^4.17.11",
-    
+    "node": "^16.6.1",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "react-google-login": "^5.2.2",

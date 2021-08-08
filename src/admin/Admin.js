@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import Posts from "../post/Posts";
-import Users from "../user/Users";
+import Posts from "../post/components/Posts";
+import Users from "../user/components/Users";
 import { isAuthenticated } from "../auth";
 import { Redirect } from "react-router-dom";
 

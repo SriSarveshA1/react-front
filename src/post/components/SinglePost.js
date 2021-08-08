@@ -1,15 +1,15 @@
 import React, { Component } from "react";
-import { singlePost, remove, like, unlike } from "./apiPost";
-import DefaultPost from "../images/mountains.jpg";
+import { singlePost, remove, like, unlike } from "../apiPost";
+import DefaultPost from "../../images/mountains.jpg";
 import { Link, Redirect } from "react-router-dom";
-import { isAuthenticated } from "../auth";
+import { isAuthenticated } from "../../auth";
 import Comment from "./Comment";
 
 class SinglePost extends Component {
     state = {
         post: "",
         redirectToHome: false,
-        redirectTosigninc: false,
+        redirectToSignin: false,
         like: false,
         likes: 0,
         comments: []
@@ -43,7 +43,7 @@ class SinglePost extends Component {
 
     likeToggle = () => {
         if (!isAuthenticated()) {
-            this.setState({ redirectTosigninc: true });
+            this.setState({ redirectToSignin: true });
             return false;
         }
         let callApi = this.state.like ? unlike : like;
@@ -187,11 +187,11 @@ class SinglePost extends Component {
     };
 
     render() {
-        const { post, redirectToHome, redirectTosigninc, comments } = this.state;
+        const { post, redirectToHome, redirectToSignin, comments } = this.state;
 
         if (redirectToHome) {
             return <Redirect to={`/`} />;
-        } else if (redirectTosigninc) {
+        } else if (redirectToSignin) {
             return <Redirect to={`/signin`} />;
         }
 
