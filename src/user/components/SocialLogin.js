@@ -40,12 +40,15 @@ class SocialLogin extends Component {
         }
 
         return (
+            <div>
+               <p>sdsdd</p> 
             <GoogleLogin
                 clientId="289826286431-4nhrfodpqd06geu0jb89qi62h4b91bj6.apps.googleusercontent.com"
                 buttonText="Login with Google"
                 onSuccess={this.responseGoogle}
                 onFailure={this.responseGoogle}
             />
+            </div>
         );
     }
 }
