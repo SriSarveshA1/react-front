@@ -1,8 +1,10 @@
 {
+  "homepage":"http://SriSarveshA1.github.io/react-front",
   "name": "react-front",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "gh-pages": "^3.2.3",
     "heroku": "^7.56.1",
     "lodash": "^4.17.11",
     "node": "^16.6.1",
@@ -13,6 +15,8 @@
     "react-scripts": "^2.1.3"
   },
   "scripts": {
+    "predeploy":"npm run build",
+    "deploy":"gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
