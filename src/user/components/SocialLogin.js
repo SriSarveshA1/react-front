@@ -13,11 +13,13 @@ class SocialLogin extends Component {
 
     responseGoogle = response => {
         console.log(response);
-        const tokenId = response.tokenId;
-        const user = {
-            tokenId: tokenId
-        };
-
+            const { googleId, name, email, imageUrl } = response.profileObj;
+            const user = {
+                password: googleId,
+                name: name,
+                email: email,
+                imageUrl: imageUrl
+            };
         // console.log("user obj to social login: ", user);
         socialLogin(user).then(data => {
             console.log("signin data: ", data);
@@ -40,15 +42,12 @@ class SocialLogin extends Component {
         }
 
         return (
-            <div>
-               <p>sdsdd</p> 
             <GoogleLogin
                 clientId="289826286431-4nhrfodpqd06geu0jb89qi62h4b91bj6.apps.googleusercontent.com"
                 buttonText="Login with Google"
                 onSuccess={this.responseGoogle}
                 onFailure={this.responseGoogle}
             />
-            </div>
         );
     }
 }
