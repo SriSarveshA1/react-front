@@ -12,13 +12,45 @@ class Signin extends Component {
             error: "",
             redirectToReferer: false,
             loading: false,
-            recaptcha: false//so this is false we need to enter the recapcha again correctly
+            recaptcha: false
         };
     }
 
     handleChange = name => event => {
         this.setState({ error: "" });
         this.setState({ [name]: event.target.value });
+    };
+
+    recaptchaHandler = e => {
+        this.setState({ error: "" });
+        let userDay = e.target.value.toLowerCase();
+        let dayCount;
+
+        if (userDay === "sunday") {
+            dayCount = 0;
+        } else if (userDay === "monday") {
+            dayCount = 1;
+        } else if (userDay === "tuesday") {
+            dayCount = 2;
+        } else if (userDay === "wednesday") {
+            dayCount = 3;
+        } else if (userDay === "thursday") {
+            dayCount = 4;
+        } else if (userDay === "friday") {
+            dayCount = 5;
+        } else if (userDay === "saturday") {
+            dayCount = 6;
+        }
+
+        if (dayCount === new Date().getDay()) {
+            this.setState({ recaptcha: true });
+            return true;
+        } else {
+            this.setState({
+                recaptcha: false
+            });
+            return false;
+        }
     };
 
     clickSubmit = event => {
@@ -30,7 +62,7 @@ class Signin extends Component {
             password
         };
         // console.log(user);
-        if (this.state.recaptcha) {//we are making a check when the submit button is clicked whether a recaptha is crc
+        if (this.state.recaptcha) {
             signin(user).then(data => {
                 if (data.error) {
                     this.setState({ error: data.error, loading: false });
@@ -49,39 +81,7 @@ class Signin extends Component {
         }
     };
 
-    recaptchaHandler = e => {
-        this.setState({ error: "" });
-        let userDay = e.target.value.toLowerCase();
-        let dayCount;
- 
-        if (userDay === "sunday") {
-            dayCount = 0;
-        } else if (userDay === "monday") {
-            dayCount = 1;
-        } else if (userDay === "tuesday") {
-            dayCount = 2;
-        } else if (userDay === "wednesday") {
-            dayCount = 3;
-        } else if (userDay === "thursday") {
-            dayCount = 4;
-        } else if (userDay === "friday") {
-            dayCount = 5;
-        } else if (userDay === "saturday") {
-            dayCount = 6;
-        }
- 
-        if (dayCount === new Date().getDay()) {//
-            this.setState({ recaptcha: true });
-            return true;
-        } else {
-            this.setState({
-                recaptcha: false
-            });
-            return false;
-        }
-    };
-
-    signinForm = (email, password,recaptcha) => (
+    signinForm = (email, password, recaptcha) => (
         <form>
             <div className="form-group">
                 <label className="text-muted">Email</label>
@@ -101,16 +101,17 @@ class Signin extends Component {
                     value={password}
                 />
             </div>
+
             <div className="form-group">
-                 <label className="text-muted">
-                  {recaptcha ? "Thanks. You got it!" : "What day is today?"}{/* if entered recaptcha is correct this will become true and we will get the Thanks.You got it*/}
+                <label className="text-muted">
+                    {recaptcha ? "Thanks. You got it!" : "What day is today?"}
                 </label>
- 
-             <input
-                onChange={this.recaptchaHandler}
-                type="text"
-                className="form-control"
-             />
+
+                <input
+                    onChange={this.recaptchaHandler}
+                    type="text"
+                    className="form-control"
+                />
             </div>
 
             <button
@@ -144,7 +145,6 @@ class Signin extends Component {
 
                 <hr />
                 <br />
-                <br />
 
                 <div
                     className="alert alert-danger"
@@ -161,7 +161,7 @@ class Signin extends Component {
                     ""
                 )}
 
-                {this.signinForm(email, password,recaptcha)}
+                {this.signinForm(email, password, recaptcha)}
 
                 <p>
                     <Link

@@ -1,26 +1,30 @@
-export const signup = user => {
+export const signup = user => {//this function will get the response and the response will be returned to the called line of this function so we can print the user about the validation mistakes
     return fetch(`${process.env.REACT_APP_API_URL}/signup`, {
+         //these are the information that we are sending to the backend
         method: "POST",
         headers: {
             Accept: "application/json",
-            "Content-Type": "application/json"
+            "Content-Type": "application/json"//the conent type that we are passing should be json type
         },
-        body: JSON.stringify(user)
+        body: JSON.stringify(user)//we need to convert from the normal object to the JSON object
     })
-        .then(response => {
-            return response.json();
+        .then(response => {//so when the request made successfully
+            return response.json();//we just return the response object
         })
-        .catch(err => console.log(err));
+        .catch(err => console.log(err));//if the request was not successful 
 };
 
-export const signin = user => {
+export const signin = user => {//this function will get the response and the response will be returned to the called line of this function so we can print the user about the validation mistakes
+     //console.log("sdsdsdsd=",process.env.REACT_APP_API_URL);
     return fetch(`${process.env.REACT_APP_API_URL}/signin`, {
+
+          //these are the information that we are sending to the backend
         method: "POST",
         headers: {
             Accept: "application/json",
-            "Content-Type": "application/json"
+            "Content-Type": "application/json"//the conent type that we are passing should be json type
         },
-        body: JSON.stringify(user)
+        body: JSON.stringify(user)//we need to convert from the normal object to the JSON object
     })
         .then(response => {
             return response.json();

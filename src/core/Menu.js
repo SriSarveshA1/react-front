@@ -9,7 +9,7 @@ const isActive = (history, path) => {
 
 const Menu = ({ history }) => (
     <div>
-        <ul className="nav nav-tabs bg-primary">
+        <ul className="nav nav-tabs bg-info">
             <li className="nav-item">
                 <Link
                     className="nav-link"
@@ -39,17 +39,7 @@ const Menu = ({ history }) => (
                     Create Post
                 </Link>
             </li>
-            {isAuthenticated() && isAuthenticated().user.role === "admin" && (//only the authenticated and the user who has admin role can enter into this admin tab
-            <li className="nav-item">
-             <Link
-              to={`/admin`}
-              style={isActive(history, `/admin`)}
-              className="nav-link"
-             >
-               Admin
-            </Link>
-            </li>
-             )}
+
             {!isAuthenticated() && (
                 <>
                     <li className="nav-item">
@@ -71,6 +61,18 @@ const Menu = ({ history }) => (
                         </Link>
                     </li>
                 </>
+            )}
+
+            {isAuthenticated() && isAuthenticated().user.role === "admin" && (
+                <li className="nav-item">
+                    <Link
+                        to={`/admin`}
+                        style={isActive(history, `/admin`)}
+                        className="nav-link"
+                    >
+                        Admin
+                    </Link>
+                </li>
             )}
 
             {isAuthenticated() && (

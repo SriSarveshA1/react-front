@@ -24,7 +24,7 @@ class EditPost extends Component {
                 this.setState({ redirectToProfile: true });
             } else {
                 this.setState({
-                    id: data._id,
+                    id: data.postedBy._id,
                     title: data.title,
                     body: data.body,
                     error: ""
@@ -70,7 +70,7 @@ class EditPost extends Component {
         this.setState({ loading: true });
 
         if (this.isValid()) {
-            const postId = this.state.id;
+            const postId = this.props.match.params.postId;
             const token = isAuthenticated().token;
 
             update(postId, token, this.postData).then(data => {
@@ -120,7 +120,7 @@ class EditPost extends Component {
 
             <button
                 onClick={this.clickSubmit}
-                className="btn btn-raised btn-primary"
+                className="btn btn-raised btn-success"
             >
                 Update Post
             </button>
@@ -170,7 +170,11 @@ class EditPost extends Component {
                     alt={title}
                 />
 
-                {this.editPostForm(title, body)}
+               {isAuthenticated().user.role === "admin" &&
+                    this.editPostForm(title, body)}
+
+                {isAuthenticated().user._id === id &&
+                    this.editPostForm(title, body)}
             </div>
         );
     }

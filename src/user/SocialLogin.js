@@ -13,15 +13,15 @@ class SocialLogin extends Component {
 
     responseGoogle = response => {
         console.log(response);
-     //responce we get from google 
+        const { googleId, name, email, imageUrl } = response.profileObj;
         const user = {
-            password:   response.profileObj.googleId,
-            name:   response.profileObj.name,
-            email:   response.profileObj.email,
-            imageUrl:  response.profileObj. imageUrl
+            password: googleId,
+            name: name,
+            email: email,
+            imageUrl: imageUrl
         };
         // console.log("user obj to social login: ", user);
-        socialLogin(user).then(data => {//with this data we are sending post request to backend
+        socialLogin(user).then(data => {
             console.log("signin data: ", data);
             if (data.error) {
                 console.log("Error Login. Please try again..");

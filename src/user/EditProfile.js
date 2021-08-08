@@ -45,7 +45,7 @@ class EditProfile extends Component {
 
     isValid = () => {
         const { name, email, password, fileSize } = this.state;
-        if (fileSize > 100000) {
+        if (fileSize > 1000000) {
             this.setState({
                 error: "File size should be less than 100kb",
                 loading: false
@@ -90,26 +90,25 @@ class EditProfile extends Component {
 
         if (this.isValid()) {
             const userId = this.props.match.params.userId;
-            const token = isAuthenticated().token;
-
-            update(userId, token, this.userData).then(data => {
-                if (data.error) this.setState({ error: data.error });
-                else{
-                    //if the user is admin who changed someones profile name we just do redirect 
-                    if (isAuthenticated().user.role === "admin") {
-                        this.setState({
-                            redirectToProfile: true
-                        });
-                    }
-                        else{//if the user himself changes we update the localStorage and the profile tab name is also changed
-                    updateUser(data, () => {
-                        this.setState({
-                            redirectToProfile: true
-                        });
+        const token = isAuthenticated().token;
+ 
+        update(userId, token, this.userData).then(data => {
+            if (data.error) {
+                this.setState({ error: data.error });
+                // if admin only redirect
+            } else if (isAuthenticated().user.role === "admin") {
+                this.setState({
+                    redirectToProfile: true
+                });
+            } else {
+                // if same user update localstorage and redirect
+                updateUser(data, () => {
+                    this.setState({
+                        redirectToProfile: true
                     });
-                }
-                }
-            });
+                });
+            }
+        });
         }
     };
 
@@ -164,7 +163,7 @@ class EditProfile extends Component {
             </div>
             <button
                 onClick={this.clickSubmit}
-                className="btn btn-raised btn-primary"
+                className="btn btn-raised btn-success"
             >
                 Update
             </button>
@@ -184,6 +183,10 @@ class EditProfile extends Component {
         } = this.state;
 
         if (redirectToProfile) {
+            if(isAuthenticated().user.role==="admin")
+            {
+                return <Redirect to={`/user/${isAuthenticated().user._id}`} />;
+            }
             return <Redirect to={`/user/${id}`} />;
         }
 
@@ -219,7 +222,8 @@ class EditProfile extends Component {
                     alt={name}
                 />
 
-                {this.signupForm(name, email, password, about)}
+               
+                    {this.signupForm(name, email, password, about)}
             </div>
         );
     }
