@@ -24,7 +24,7 @@ class Admin extends Component {
             <div>
                 <div className="jumbotron bg-dark text-white ">
                     <h2>Admin Dashboard</h2>
-                    <p className="lead">Welcome to React Frontend</p>
+                    <p className="lead">Welcome </p>
                 </div>
                 <div className="container-fluid">
                     <div className="row">
