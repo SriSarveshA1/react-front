@@ -223,7 +223,11 @@ class EditProfile extends Component {
                 />
 
                
-                    {this.signupForm(name, email, password, about)}
+                {isAuthenticated().user.role === "admin" &&
+                    this.signupForm(name, email, password, about)}
+
+                {isAuthenticated().user._id === id &&
+                    this.signupForm(name, email, password, about)}
             </div>
         );
     }
