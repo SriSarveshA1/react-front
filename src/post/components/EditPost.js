@@ -173,7 +173,7 @@ class EditPost extends Component {
                {isAuthenticated().user.role === "admin" &&
                     this.editPostForm(title, body)}
 
-                {isAuthenticated().user._id === id &&
+                {isAuthenticated().user._id === id &&(isAuthenticated().user.role!="admin")&&
                     this.editPostForm(title, body)}
             </div>
         );
